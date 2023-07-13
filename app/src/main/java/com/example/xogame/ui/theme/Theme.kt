@@ -37,6 +37,7 @@ private val LightCustomColorPlate = CustomColorsPalette(
     background = Background,
     onBackground87 = OnBackgroundLight87,
     onBackground60 = OnBackgroundLight60,
+    onBackground36 = OnBackgroundLight36,
     card = CardLight,
     gameCard = GameCardLight
 )
@@ -48,6 +49,7 @@ private val DarkCustomColorPlate = CustomColorsPalette(
     background = Background,
     onBackground87 = OnBackgroundLight87,
     onBackground60 = OnBackgroundLight60,
+    onBackground36 = OnBackgroundLight36,
     card = CardLight,
     gameCard = GameCardLight
 )
