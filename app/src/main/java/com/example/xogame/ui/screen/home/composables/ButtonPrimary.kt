@@ -1,4 +1,4 @@
-package com.example.xogame.ui.screen.composables
+package com.example.xogame.ui.screen.home.composables
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

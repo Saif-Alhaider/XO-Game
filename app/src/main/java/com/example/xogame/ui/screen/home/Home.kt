@@ -1,4 +1,4 @@
-package com.example.xogame.ui.screen
+package com.example.xogame.ui.screen.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.xogame.ui.common.composables.MainBackground
 import com.example.xogame.ui.common.composables.OutlinedTextFieldPrimary
-import com.example.xogame.ui.screen.composables.PrimaryButton
+import com.example.xogame.ui.screen.home.composables.PrimaryButton
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 
