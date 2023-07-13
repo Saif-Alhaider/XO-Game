@@ -15,10 +15,16 @@ import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 
 @Composable
-fun OutlinedTextFieldPrimary(modifier:Modifier=Modifier ,onValueChanged:(String)->Unit,placeHolder:String = "") {
+fun OutlinedTextFieldPrimary(
+    modifier: Modifier = Modifier,
+    onValueChanged: (String) -> Unit,
+    placeHolder: String = "",
+    trailingIcon: @Composable (() -> Unit)? = null
+) {
     OutlinedTextField(
         value = "",
         onValueChange = onValueChanged,
+        trailingIcon = trailingIcon,
         placeholder = {
             Text(
                 text = placeHolder,
