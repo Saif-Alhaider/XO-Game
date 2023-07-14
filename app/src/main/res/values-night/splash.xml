@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.XOGame." parent="Theme.XOGame">
-        <item name="windowSplashScreenBackground">@android:color/black</item>
+        <item name="windowSplashScreenBackground">@android:color/white</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_tak_tac_toe</item>
         <item name="postSplashScreenTheme">@style/Theme.SplashScreen</item>
     </style>
