@@ -21,7 +21,7 @@ fun PrimaryButton(text: String, onClick: () -> Unit) {
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = "Start Game",
+            text = text,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(vertical = 8.dp)
         )
