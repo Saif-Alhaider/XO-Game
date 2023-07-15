@@ -1,6 +1,7 @@
 package com.example.xogame.ui.screen.start_game
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.xogame.R
 import com.example.xogame.ui.composables.OutlinedTextFieldPrimary
+import com.example.xogame.ui.composables.PrimaryButton
 import com.example.xogame.ui.composables.Scaffold
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
@@ -47,13 +49,11 @@ fun StartGameContent() {
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(top = 40.dp)
             )
-            OutlinedTextFieldPrimary(
-                modifier = Modifier.padding(top = 16.dp),
+            OutlinedTextFieldPrimary(modifier = Modifier.padding(top = 16.dp),
                 onValueChanged = {}) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_copy),
-                    contentDescription = "copy"
-                )
+                Image(painter = painterResource(id = R.drawable.ic_copy),
+                    contentDescription = "copy",
+                    modifier = Modifier.clickable { })
             }
             Text(
                 text = stringResource(R.string.when_your_friend_joins_the_game_you_ll_be_ready_to_have_fun_playing_together),
@@ -62,6 +62,7 @@ fun StartGameContent() {
                 color = XOGameCustomColors.current.onBackground60,
                 modifier = Modifier.padding(top = 24.dp)
             )
+
         }
     }
 }

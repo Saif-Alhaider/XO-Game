@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.xogame.R
 import com.example.xogame.ui.composables.GameResultDialog
-import com.example.xogame.ui.composables.PlayCard
+import com.example.xogame.ui.screen.play.composable.PlayCard
 import com.example.xogame.ui.composables.Scaffold
 import com.example.xogame.ui.screen.play.composable.PlayerLabel
 import com.example.xogame.ui.theme.XOGameCustomColors
