@@ -33,8 +33,6 @@ fun HomeScreen() {
 @OptIn(ExperimentalTextApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HomeContent() {
-    val primaryPink = XOGameCustomColors.current.primaryPink
-    val primaryBlue = XOGameCustomColors.current.primaryBlue
     Box(
         Modifier
             .fillMaxSize()
