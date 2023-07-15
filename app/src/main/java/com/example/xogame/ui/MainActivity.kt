@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.example.xogame.ui.screen.play.PlayGameScreen
 import com.example.xogame.ui.screen.start_game.StartGameContent
 import com.example.xogame.ui.theme.XOGameTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    StartGameContent()
+                    PlayGameScreen()
                 }
 
             }

@@ -22,7 +22,7 @@ import androidx.compose.ui.zIndex
 import com.example.xogame.R
 import com.example.xogame.ui.composables.OutlinedTextFieldPrimary
 import com.example.xogame.ui.composables.Scaffold
-import com.example.xogame.ui.screen.home.composables.PrimaryButton
+import com.example.xogame.ui.composables.PrimaryButton
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 

@@ -2,6 +2,7 @@ package com.example.xogame.ui.screen.play
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -22,10 +23,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.xogame.R
+import com.example.xogame.ui.composables.GameResultDialog
 import com.example.xogame.ui.composables.PlayCard
 import com.example.xogame.ui.composables.Scaffold
 import com.example.xogame.ui.screen.play.composable.PlayerLabel
-import com.example.xogame.ui.theme.Typography
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 
@@ -38,63 +39,68 @@ fun PlayGameScreen() {
 fun PlayGameContent() {
     Scaffold {
 
-        Column(
-            modifier = Modifier.fillMaxHeight().zIndex(2f),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
-        ) {
+        Box(modifier = Modifier.zIndex(4f)) {
+
+            GameResultDialog(showDialog = false, winner = null ,modifier = Modifier.zIndex(5f))
+
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
-                    .background(
-                        color = XOGameCustomColors.current.card,
-                        shape = RoundedCornerShape(12.dp)
-                    )
-                    .padding(horizontal = 12.dp, vertical = 16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier.fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                Text(
-                    text = stringResource(R.string.two_player_game),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleSmall,
-                    color = XOGameCustomColors.current.onBackground87
-                )
-                Row(
-                    modifier = Modifier.padding(top = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
+                        .background(
+                            color = XOGameCustomColors.current.card,
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        .padding(horizontal = 12.dp, vertical = 16.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    PlayerLabel(
-                        playerName = "Meme",
-                        playerSymbol = R.drawable.ic_x_palyer,
-                        colorName = XOGameCustomColors.current.primaryBlue,
-                    )
                     Text(
-                        text = stringResource(R.string.vs),
+                        text = stringResource(R.string.two_player_game),
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        style = Typography.bodyLarge,
+                        style = MaterialTheme.typography.titleSmall,
                         color = XOGameCustomColors.current.onBackground87
                     )
-                    PlayerLabel(
-                        playerName = "Asia",
-                        playerSymbol = R.drawable.ic_o_player,
-                        colorName = XOGameCustomColors.current.primaryPink,
-                    )
+                    Row(
+                        modifier = Modifier.padding(top = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        PlayerLabel(
+                            playerName = "Meme",
+                            playerSymbol = R.drawable.ic_x_palyer,
+                            colorName = XOGameCustomColors.current.primaryBlue,
+                        )
+                        Text(
+                            text = stringResource(R.string.vs),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = XOGameCustomColors.current.onBackground87
+                        )
+                        PlayerLabel(
+                            playerName = "Asia",
+                            playerSymbol = R.drawable.ic_o_player,
+                            colorName = XOGameCustomColors.current.primaryPink,
+                        )
+                    }
                 }
-            }
 
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
-                contentPadding = PaddingValues(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                    contentPadding = PaddingValues(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
 
-                items(9, key = { it }) {
-                    PlayCard(modifier = Modifier)
+                    items(9, key = { it }) {
+                        PlayCard(modifier = Modifier)
+                    }
                 }
             }
         }
