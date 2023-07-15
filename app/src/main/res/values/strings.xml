@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">XO Game</string>
+    <string name="player">player</string>
+    <string name="vs">VS</string>
+    <string name="two_player_game">Two Player Game</string>
+    <string name="tik_tak_toe">TIK TAK TOE</string>
+    <string name="start_game">Start Game</string>
+    <string name="join_game">Join Game</string>
+    <string name="when_your_friend_joins_the_game_you_ll_be_ready_to_have_fun_playing_together">When your friend joins the game, you\'ll be ready to have fun playing together</string>
+    <string name="copy_the_following_code_and_send_it_to_your_friend">Copy the following code and send it to your friend</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.xogame.ui.common.composables
+package com.example.xogame.ui.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
