@@ -51,7 +51,7 @@ fun StartGameContent() {
                     painter = painterResource(id = R.drawable.ic_copy),
                     contentDescription = "copy"
                 )
-            }, modifier = Modifier.padding(top = 16.dp))
+            }, modifier = Modifier.padding(top = 16.dp), value = "")
             Text(
                 text = "When your friend joins the game, you'll be ready to have fun playing together",
                 textAlign = TextAlign.Center,
