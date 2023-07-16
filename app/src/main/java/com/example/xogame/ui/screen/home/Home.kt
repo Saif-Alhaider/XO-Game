@@ -12,6 +12,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -19,6 +20,7 @@ import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.xogame.ui.common.composables.MainBackground
 import com.example.xogame.ui.common.composables.OutlinedTextFieldPrimary
 import com.example.xogame.ui.screen.home.composables.PrimaryButton
@@ -26,13 +28,24 @@ import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 
 @Composable
-fun HomeScreen() {
-    HomeContent()
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+    val state = viewModel.state.collectAsState().value
+    HomeContent(
+        onClickStart = viewModel::onClickStartGame,
+        updateUsername = viewModel::updateUsername,
+        onClickJoin=viewModel::onClickJoin,
+        state = state
+    )
 }
 
 @OptIn(ExperimentalTextApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun HomeContent() {
+fun HomeContent(
+    updateUsername: (String) -> Unit,
+    onClickStart: () -> Unit,
+    onClickJoin: () -> Unit,
+    state: HomeUiState
+) {
     Box(
         Modifier
             .fillMaxSize()
@@ -43,7 +56,6 @@ fun HomeContent() {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-
                 .padding(horizontal = 16.dp)
         ) {
             //region title
@@ -62,15 +74,16 @@ fun HomeContent() {
             //region enter username
             OutlinedTextFieldPrimary(
                 modifier = Modifier.padding(top = 48.dp),
-                onValueChanged = {},
-                placeHolder = "Enter your name"
+                onValueChanged = updateUsername,
+                placeHolder = "Enter your name",
+                value = state.username
             )
             //endregion
             //region start and join game
             Column(Modifier.padding(top = 48.dp)) {
-                PrimaryButton(text = "Start Game", onClick = {})
+                PrimaryButton(text = "Start Game", onClick = onClickStart)
                 Spacer(modifier = Modifier.height(12.dp))
-                PrimaryButton(text = "Join Game", onClick = {})
+                PrimaryButton(text = "Join Game", onClick = onClickJoin)
             }
             //endregion
         }
@@ -82,6 +95,6 @@ fun HomeContent() {
 @Composable
 fun HomePreview() {
     XOGameTheme {
-        HomeContent()
+        HomeScreen()
     }
 }
