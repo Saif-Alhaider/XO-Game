@@ -17,12 +17,13 @@ import com.example.xogame.ui.theme.XOGameTheme
 @Composable
 fun OutlinedTextFieldPrimary(
     modifier: Modifier = Modifier,
+    value:String,
     onValueChanged: (String) -> Unit,
     placeHolder: String = "",
     trailingIcon: @Composable (() -> Unit)? = null
 ) {
     OutlinedTextField(
-        value = "",
+        value = value,
         onValueChange = onValueChanged,
         trailingIcon = trailingIcon,
         placeholder = {
@@ -48,6 +49,6 @@ fun OutlinedTextFieldPrimary(
 @Composable
 fun OutlinedButtonPrimaryPreview() {
     XOGameTheme {
-        OutlinedTextFieldPrimary(onValueChanged = {}, placeHolder = "Enter your name")
+        OutlinedTextFieldPrimary(onValueChanged = {}, placeHolder = "Enter your name", value = "")
     }
 }
