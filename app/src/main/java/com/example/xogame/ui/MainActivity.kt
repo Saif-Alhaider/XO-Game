@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.example.xogame.ui.screen.home.HomeScreen
 import com.example.xogame.ui.theme.XOGameTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,12 +19,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         setContent {
             XOGameTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                }
+                HomeScreen()
             }
         }
     }
