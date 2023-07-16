@@ -1,4 +1,46 @@
 package com.example.xogame.di
 
+import com.example.xogame.data.remote.XOSocketService
+import com.example.xogame.data.remote.XOSocketServiceImpl
+import com.google.gson.Gson
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.features.logging.Logging
+import io.ktor.client.features.websocket.WebSockets
+import javax.inject.Singleton
+
+
+@Module
+@InstallIn(SingletonComponent::class)
 class NetworkModule {
+    @Provides
+    @Singleton
+    fun provideHttpClient(): HttpClient {
+        return HttpClient(CIO) {
+            install(Logging)
+            install(WebSockets)
+            install(JsonFeature) {
+                serializer = KotlinxSerializer()
+            }
+
+        }
+    }
+
+    @Provides
+    @Singleton
+    fun provideGson(): Gson {
+        return Gson()
+    }
+
+    @Provides
+    @Singleton
+    fun provideXOSocketService(client: HttpClient, gson: Gson): XOSocketService {
+        return XOSocketServiceImpl(client, gson)
+    }
 }
