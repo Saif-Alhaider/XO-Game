@@ -29,10 +29,10 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onClickJoin() {
-        viewModelScope.launch {
-            xoSocketServiceImpl.joinSession("mohammad", "1c369196-5c96-41df-9118-dd2379625a15")
-            xoSocketServiceImpl.observeGame()
-                .collectLatest { xoSocketServiceImpl.sendXO(Game(2, 2)) }
-        }
+//        viewModelScope.launch {
+//            xoSocketServiceImpl.joinSession("mohammad", "1c369196-5c96-41df-9118-dd2379625a15")
+//            xoSocketServiceImpl.observeGame()
+//                .collectLatest { xoSocketServiceImpl.sendXO(Game(2, 2)) }
+//        }
     }
 }
