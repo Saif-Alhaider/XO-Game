@@ -1,8 +1,6 @@
 package com.example.xogame.ui.screen.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,6 +23,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.xogame.ui.common.composables.MainBackground
 import com.example.xogame.ui.common.composables.OutlinedTextFieldPrimary
 import com.example.xogame.ui.screen.home.composables.PrimaryButton
+import com.example.xogame.R
+import com.example.xogame.ui.composables.OutlinedTextFieldPrimary
+import com.example.xogame.ui.composables.XoScaffold
+import com.example.xogame.ui.composables.PrimaryButton
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 
@@ -46,11 +49,7 @@ fun HomeContent(
     onClickJoin: () -> Unit,
     state: HomeUiState
 ) {
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(color = XOGameCustomColors.current.background)
-    ) {
+    XoScaffold {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -60,7 +59,7 @@ fun HomeContent(
         ) {
             //region title
             Text(
-                text = "TIK TAK TOE", style = MaterialTheme.typography.titleMedium.copy(
+                text = stringResource(R.string.tik_tak_toe), style = MaterialTheme.typography.titleMedium.copy(
                     brush = Brush.linearGradient(
                         colors = listOf(
                             XOGameCustomColors.current.primaryPink,
@@ -81,13 +80,12 @@ fun HomeContent(
             //endregion
             //region start and join game
             Column(Modifier.padding(top = 48.dp)) {
-                PrimaryButton(text = "Start Game", onClick = onClickStart)
+                PrimaryButton(text = stringResource(R.string.start_game), onClick =  onClickStart)
                 Spacer(modifier = Modifier.height(12.dp))
-                PrimaryButton(text = "Join Game", onClick = onClickJoin)
+                PrimaryButton(text = stringResource(R.string.join_game), onClick = onClickJoin)
             }
             //endregion
         }
-        MainBackground()
     }
 }
 

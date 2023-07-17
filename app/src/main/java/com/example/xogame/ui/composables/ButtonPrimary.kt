@@ -1,4 +1,4 @@
-package com.example.xogame.ui.screen.home.composables
+package com.example.xogame.ui.composables
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,13 +12,13 @@ import androidx.compose.ui.unit.dp
 import com.example.xogame.ui.theme.XOGameCustomColors
 
 @Composable
-fun PrimaryButton(text: String, onClick: () -> Unit) {
+fun PrimaryButton(modifier: Modifier = Modifier,text: String, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             XOGameCustomColors.current.primaryPink.copy(alpha = .7f)
         ),
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Text(
             text = text,
