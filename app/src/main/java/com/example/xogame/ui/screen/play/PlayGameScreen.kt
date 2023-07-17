@@ -23,9 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.xogame.R
-import com.example.xogame.ui.composables.GameResultDialog
+import com.example.xogame.ui.composables.XoScaffold
+import com.example.xogame.ui.screen.play.composable.GameResultDialog
 import com.example.xogame.ui.screen.play.composable.PlayCard
-import com.example.xogame.ui.composables.Scaffold
 import com.example.xogame.ui.screen.play.composable.PlayerLabel
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
@@ -37,11 +37,11 @@ fun PlayGameScreen() {
 
 @Composable
 fun PlayGameContent() {
-    Scaffold {
+    XoScaffold {
 
-        Box(modifier = Modifier.zIndex(4f)) {
+        Box {
 
-            GameResultDialog(showDialog = false, winner = null ,modifier = Modifier.zIndex(5f))
+            GameResultDialog(showDialog = false, winner = null, modifier = Modifier.zIndex(2f))
 
             Column(
                 modifier = Modifier.fillMaxHeight(),

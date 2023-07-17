@@ -16,11 +16,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.example.xogame.R
 import com.example.xogame.ui.composables.OutlinedTextFieldPrimary
-import com.example.xogame.ui.composables.PrimaryButton
-import com.example.xogame.ui.composables.Scaffold
+import com.example.xogame.ui.composables.XoScaffold
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 
@@ -31,10 +29,9 @@ fun StartGameScreen() {
 
 @Composable
 fun StartGameContent() {
-    Scaffold {
+    XoScaffold {
         Column(
             Modifier
-                .zIndex(2f)
                 .fillMaxSize()
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.Center,
