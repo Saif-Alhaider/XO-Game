@@ -47,7 +47,7 @@ fun StartGameContent() {
                 modifier = Modifier.padding(top = 40.dp)
             )
             OutlinedTextFieldPrimary(modifier = Modifier.padding(top = 16.dp),
-                onValueChanged = {}) {
+                onValueChanged = {}, value = "") {
                 Image(painter = painterResource(id = R.drawable.ic_copy),
                     contentDescription = "copy",
                     modifier = Modifier.clickable { })
