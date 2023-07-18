@@ -80,21 +80,28 @@ class XOSocketServiceImpl @Inject constructor(
     }
 
     @OptIn(ExperimentalSerializationApi::class)
-    override suspend fun observeGame(onFriendNotify: () -> Unit): Flow<GameTurn> {
+    override suspend fun observeGame(onFriendNotify: () -> Unit): Flow<GameTurn?> {
         Log.i("gg", "observeGame: working")
         return try {
             socket?.incoming?.receiveAsFlow()?.map {
-                val response = (it as? Frame.Text)?.readText() ?: ""
-                if (response == "Your Friend Joined the game") {
-                    onFriendNotify()
-                } else if (response == "Not your turn") {
-                    Log.e("gg", "Not your turn: $response")
-                } else {
-                    val gameDto = Json.decodeFromString<GameDto>(response)
-                    gameDto.asGame()
-                    Log.i("gg", "gameDto: $gameDto")
+                when (val response = (it as? Frame.Text)?.readText() ?: "") {
+                    "Your Friend Joined the game" -> {
+                        onFriendNotify()
+                    }
+                    "Not your turn" -> {
+                        Log.e("gg", "Not your turn: $response")
+                    }
+                    else -> {
+                        try {
+                            val gameDto = Json.decodeFromString<GameDto>(response)
+                            gameDto.asGame()
+                            Log.i("gg", "gameDto: $gameDto")
+                        }catch (e: Exception){
+                            Log.i("gg", "${e.message}")
+                        }
+                    }
                 }
-                GameTurn(1, 2,"X")
+                null
             } ?: flow {
             }
         } catch (e: Exception) {

@@ -16,7 +16,7 @@ interface XOSocketService {
         roomId: String,
     ): ResponseResult<Unit>
 
-    suspend fun observeGame(onFriendNotify: () -> Unit = {}): Flow<GameTurn>
+    suspend fun observeGame(onFriendNotify: () -> Unit = {}): Flow<GameTurn?>
 
     suspend fun sendXO(game:Game)
 

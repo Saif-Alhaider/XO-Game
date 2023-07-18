@@ -37,14 +37,16 @@ fun PlayGameScreen(
     PlayGameContent(
         state = state,
         onClickSquare = viewModel::onClickSquare,
-
-        )
+        onClickCard = viewModel::disablePosition
+    )
 }
 
 @Composable
 fun PlayGameContent(
     state: PlayUiState,
     onClickSquare: (Int, Int) -> Unit,
+    onClickCard: () -> Unit
+
 ) {
     XoScaffold {
 
@@ -114,7 +116,9 @@ fun PlayGameContent(
                                     modifier = Modifier,
                                     value = state.board[row][column],
                                     onClick = { onClickSquare(row, column) },
-                                    playerTurn = state.Turn
+                                    playerTurn = state.turn,
+                                    isActive = state.isActive,
+                                    onClickCard = onClickCard
                                 )
                             }
                         }
@@ -132,12 +136,3 @@ fun StartGamePreview() {
 }
 
 
-data class PlayUiState(
-    val board: List<List<String>> = listOf(
-        listOf("", "", ""),
-        listOf("", "", ""),
-        listOf("", "", "")
-    ),
-    val Turn: String = "X",
-    val winner: String = "",
-)

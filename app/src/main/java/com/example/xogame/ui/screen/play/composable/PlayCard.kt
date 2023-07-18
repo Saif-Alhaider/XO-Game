@@ -22,7 +22,9 @@ fun PlayCard(
     modifier: Modifier = Modifier,
     value: String ,
     onClick: () -> Unit,
-    playerTurn:String?=null
+    playerTurn:String?=null,
+    isActive:Boolean,
+    onClickCard:() -> Unit
 ) {
     Box(
         modifier = modifier
@@ -31,16 +33,15 @@ fun PlayCard(
             .background(
                 shape = RoundedCornerShape(12.dp),
                 color = XOGameCustomColors.current.gameCard
-            )
-            .clickable(enabled = playerTurn==null
-
-            ){
+            ).clickable(enabled = value.isBlank() && isActive)
+            {
                 onClick()
+                onClickCard()
                 Log.e("TAG", "PlayCard: $value")
             }
     ) {
         (
-                when (playerTurn) {
+                when (value) {
             "X" -> painterResource(id = R.drawable.ic_x_palyer)
             "O" -> painterResource(
                 id = R.drawable.ic_o_player
