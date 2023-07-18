@@ -1,7 +1,6 @@
 package com.example.xogame.ui.screen.home
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,15 +33,20 @@ import com.example.xogame.ui.screen.join_game.navigateToJoinGame
 import com.example.xogame.ui.screen.start_game.navigateToStartGame
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
+import kotlinx.coroutines.DelicateCoroutinesApi
 
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(),navController :NavController) {
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navController: NavController) {
     val state = viewModel.state.collectAsState().value
     HomeContent(
         onClickStart = { navController.navigateToStartGame(state.username) },
         updateUsername = viewModel::updateUsername,
         onClickJoin = { navController.navigateToJoinGame(state.username) },
-        state = state
+        state = state,
+        savePlayerName = viewModel::savePlayerName,
+        getPlayerName = viewModel::getPlayerName,
+        clearPlayerName = viewModel::clearPlayerName
     )
 }
 
@@ -52,7 +56,10 @@ fun HomeContent(
     updateUsername: (String) -> Unit,
     onClickStart: () -> Unit,
     onClickJoin: () -> Unit,
-    state: HomeUiState
+    state: HomeUiState,
+    savePlayerName: (String) -> Unit,
+    getPlayerName: () -> String,
+    clearPlayerName: () -> Unit
 ) {
     val context = LocalContext.current
     XoScaffold {
