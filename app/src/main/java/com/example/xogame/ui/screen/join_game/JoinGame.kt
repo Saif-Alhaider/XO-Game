@@ -80,11 +80,11 @@ fun JoinGameContent(
                 OutlinedTextFieldPrimary(
                     modifier = Modifier
                         .padding(top = 16.dp)
-                        .height(56.dp)
                         .fillMaxWidth(),
                     value = state.roomId,
                     enabled = true,
-                    onValueChanged = updateRoomId
+                    onValueChanged = updateRoomId,
+                    placeHolder = "Enter Room Id"
                 )
             }
             PrimaryButton(
