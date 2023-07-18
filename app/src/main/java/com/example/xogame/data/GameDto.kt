@@ -2,12 +2,17 @@ package com.example.xogame.data
 
 
 import com.google.gson.annotations.SerializedName
-import kotlinx.serialization.Serializable
 
-@Serializable
 data class GameDto(
-    @SerializedName("x")
-    val x: Int? = null,
-    @SerializedName("y")
-    val y: Int? = null
-)
+    @SerializedName("position")
+    val position: Position?,
+    @SerializedName("playTurn")
+    val playTurn: String?
+) {
+    data class Position(
+        @SerializedName("row")
+        val row: Int?,
+        @SerializedName("column")
+        val column: Int?
+    )
+}
