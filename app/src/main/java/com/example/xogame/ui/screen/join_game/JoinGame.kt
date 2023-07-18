@@ -3,7 +3,6 @@ package com.example.xogame.ui.screen.join_game
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,10 +23,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.xogame.R
-import com.example.xogame.ui.common.composables.MainBackground
-import com.example.xogame.ui.common.composables.OutlinedTextFieldPrimary
+import com.example.xogame.ui.composables.OutlinedTextFieldPrimary
+import com.example.xogame.ui.composables.XoScaffold
 import com.example.xogame.ui.screen.home.composables.PrimaryButton
-import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 import com.example.xogame.util.createToast
 
@@ -60,8 +58,7 @@ fun JoinGameContent(
     BackHandler {
         onNavigateBack()
     }
-    Box(Modifier.background(XOGameCustomColors.current.background)) {
-        MainBackground()
+    XoScaffold {
         Box(
             Modifier
                 .fillMaxSize()
@@ -108,7 +105,6 @@ fun JoinGameContent(
                     .align(Alignment.BottomCenter)
             )
         }
-
     }
 }
 

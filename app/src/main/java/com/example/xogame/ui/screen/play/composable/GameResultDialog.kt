@@ -25,7 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.xogame.R
-import com.example.xogame.ui.composables.PrimaryButton
+import com.example.xogame.ui.screen.home.composables.PrimaryButton
 import com.example.xogame.ui.theme.XOGameCustomColors
 
 
