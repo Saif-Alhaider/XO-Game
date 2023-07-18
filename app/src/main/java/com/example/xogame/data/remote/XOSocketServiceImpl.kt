@@ -6,7 +6,6 @@ import com.example.xogame.data.GameDto
 import com.example.xogame.data.toGame
 import com.example.xogame.util.ResponseResult
 import com.google.gson.Gson
-import com.google.gson.JsonParser
 import io.ktor.client.HttpClient
 import io.ktor.client.features.websocket.webSocketSession
 import io.ktor.client.request.url
@@ -15,7 +14,6 @@ import io.ktor.http.cio.websocket.WebSocketSession
 import io.ktor.http.cio.websocket.close
 import io.ktor.http.cio.websocket.readText
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -72,15 +70,18 @@ class XOSocketServiceImpl @Inject constructor(
     }
 
     @OptIn(ExperimentalSerializationApi::class)
-    override suspend fun observeGame(): Flow<Game> {
+    override suspend fun observeGame(onFriendNotify: () -> Unit): Flow<Game> {
         Log.i("gg", "observeGame: working")
         return try {
             socket?.incoming?.receiveAsFlow()?.map {
-                val json = (it as? Frame.Text)?.readText() ?: ""
-                Log.i("gg", "observeGame: $json")
-//                val gameDto = Json.decodeFromString<GameDto>(json)
-//                gameDto.toGame()
-                Game(1,2)
+                val response = (it as? Frame.Text)?.readText() ?: ""
+                if (response == "Your Friend Joined the game") {
+                    onFriendNotify()
+                } else {
+                    val gameDto = Json.decodeFromString<GameDto>(response)
+                    gameDto.toGame()
+                }
+                Game(1, 2)
             } ?: flow { }
         } catch (e: Exception) {
             e.printStackTrace()
