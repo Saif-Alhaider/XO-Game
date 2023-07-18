@@ -1,6 +1,5 @@
 package com.example.xogame.ui.screen.home
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,33 +17,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.TileMode
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.xogame.ui.common.composables.MainBackground
 import com.example.xogame.ui.common.composables.OutlinedTextFieldPrimary
 import com.example.xogame.ui.screen.home.composables.PrimaryButton
-import com.example.xogame.ui.screen.join_game.navigateToJoinGame
-import com.example.xogame.ui.screen.start_game.navigateToStartGame
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navController: NavController) {
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     val state = viewModel.state.collectAsState().value
     HomeContent(
-        onClickStart = { navController.navigateToStartGame(state.username) },
+        onClickStart = viewModel::onClickStartGame,
         updateUsername = viewModel::updateUsername,
-        onClickJoin = { navController.navigateToJoinGame(state.username) },
+        onClickJoin=viewModel::onClickJoin,
         state = state
     )
 }
 
-@OptIn(ExperimentalTextApi::class)
+@OptIn(ExperimentalTextApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HomeContent(
     updateUsername: (String) -> Unit,
@@ -66,7 +61,7 @@ fun HomeContent(
         ) {
             //region title
             Text(
-                text = "TIK TAK TOE", style = MaterialTheme.typography.titleMedium.copy(
+                text = stringResource(R.string.tik_tak_toe), style = MaterialTheme.typography.titleMedium.copy(
                     brush = Brush.linearGradient(
                         colors = listOf(
                             XOGameCustomColors.current.primaryPink,
@@ -87,7 +82,7 @@ fun HomeContent(
             //endregion
             //region start and join game
             Column(Modifier.padding(top = 48.dp)) {
-                PrimaryButton(text = "Start Game", onClick = {
+                PrimaryButton(text = stringResource(R.string.start_game), onClick =  {
                     if (state.username.isNotBlank()) {
                         onClickStart()
                     } else {
@@ -96,7 +91,7 @@ fun HomeContent(
                     }
                 })
                 Spacer(modifier = Modifier.height(12.dp))
-                PrimaryButton(text = "Join Game", onClick = {
+                PrimaryButton(text = stringResource(R.string.join_game), onClick = {
                     if (state.username.isNotBlank()) {
                         onClickJoin()
                     } else {
@@ -115,6 +110,6 @@ fun HomeContent(
 @Composable
 fun HomePreview() {
     XOGameTheme {
-        HomeScreen(navController = rememberNavController())
+        HomeScreen()
     }
 }

@@ -1,4 +1,4 @@
-package com.example.xogame.ui.common.composables
+package com.example.xogame.ui.composables
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
