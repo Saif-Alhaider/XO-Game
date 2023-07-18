@@ -9,21 +9,21 @@ import androidx.navigation.navArgument
 
 private const val ROUTE = "start game"
 
-fun NavController.navigateToStartGame(name: String) {
-    navigate("$ROUTE/$name")
+fun NavController.navigateToStartGame(username: String) {
+    navigate("$ROUTE/$username")
 }
 
 fun NavGraphBuilder.startGameRoute(navController: NavController) {
-    composable(route = "$ROUTE/{${StartGameArgs.NAME_ARG}}",
+    composable(route = "$ROUTE/{${StartGameArgs.USERNAME_ARG}}",
         arguments = listOf(
-            navArgument("name") { NavType.StringType }
+            navArgument(StartGameArgs.USERNAME_ARG) { NavType.StringType }
         )) { StartGameScreen(navController = navController) }
 }
 
 class StartGameArgs(savedStateHandle: SavedStateHandle) {
-    val name: String = checkNotNull(savedStateHandle[NAME_ARG])
+    val username: String = checkNotNull(savedStateHandle[USERNAME_ARG])
 
     companion object {
-        const val NAME_ARG = "name"
+        const val USERNAME_ARG = "username"
     }
 }

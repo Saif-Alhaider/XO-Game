@@ -55,16 +55,24 @@ class XOSocketServiceImpl @Inject constructor(
 
     override suspend fun joinSession(username: String, roomId: String): ResponseResult<Unit> {
         return try {
+            if (socket != null) {
+                socket = null
+            }
             socket = client.webSocketSession { url("$BASE_URL/$username/$roomId") }
+            Log.i("gg", "joinSession: ${socket?.isActive}")
             if (socket?.isActive == true) {
-                Log.i("gg", "jointSession: connected")
+                Log.i(
+                    "gg",
+                    "joinSession: connected to $BASE_URL/$username/$roomId"
+                )
                 ResponseResult.Success(Unit)
             } else {
+                Log.i("gg", "joinSession:Couldn't Establish Connection ")
                 ResponseResult.Error("Couldn't Establish Connection")
             }
 
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.i("gg", "joinSession:$e ")
             ResponseResult.Error(error = e.localizedMessage ?: "unknown error")
         }
     }

@@ -1,6 +1,7 @@
 package com.example.xogame.ui.screen.start_game
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,14 +34,20 @@ import com.example.xogame.ui.theme.XOGameTheme
 @Composable
 fun StartGameScreen(viewModel: StartGameViewModel = hiltViewModel(), navController: NavController) {
     val state = viewModel.state.collectAsState().value
-    StartGameContent(state)
+    StartGameContent(onNavigateBack = {
+        navController.popBackStack()
+        viewModel.closeSession()
+    }, state)
 }
 
 @Composable
-fun StartGameContent(state: StartGameUiState) {
+fun StartGameContent(onNavigateBack: () -> Unit, state: StartGameUiState) {
     val clipboardManager = LocalClipboardManager.current
-    if (state.isFriendActive){
+    if (state.isFriendActive) {
         Log.i("gg", "StartGameContent: navigate now")
+    }
+    BackHandler {
+        onNavigateBack()
     }
     Box(Modifier.background(XOGameCustomColors.current.background)) {
         Column(

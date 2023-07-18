@@ -3,7 +3,7 @@ package com.example.xogame.ui.screen.start_game
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.xogame.data.remote.XOSocketServiceImpl
+import com.example.xogame.data.remote.XOSocketService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StartGameViewModel @Inject constructor(
-    private val xoSocketServiceImpl: XOSocketServiceImpl,
+    private val xoSocketService: XOSocketService,
     savedStateHandle: SavedStateHandle
 ) :
     ViewModel() {
@@ -28,7 +28,7 @@ class StartGameViewModel @Inject constructor(
 
     private fun createGameSession() {
         viewModelScope.launch {
-            val roomId = xoSocketServiceImpl.initSession(args.name).data as String
+            val roomId = xoSocketService.initSession(args.username).data as String
             updateRoomId(roomId)
             notifyFriendJoin()
         }
@@ -36,12 +36,18 @@ class StartGameViewModel @Inject constructor(
     }
 
     private suspend fun notifyFriendJoin() {
-        xoSocketServiceImpl.observeGame(onFriendNotify = {
+        xoSocketService.observeGame(onFriendNotify = {
             _state.update { it.copy(isFriendActive = true) }
         }).collectLatest { }
     }
 
     private fun updateRoomId(roomId: String) {
         _state.update { it.copy(roomId = roomId) }
+    }
+
+    fun closeSession(){
+        viewModelScope.launch {
+            xoSocketService.closeSession()
+        }
     }
 }
