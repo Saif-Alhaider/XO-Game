@@ -12,13 +12,13 @@ import androidx.compose.ui.unit.dp
 import com.example.xogame.ui.theme.XOGameCustomColors
 
 @Composable
-fun PrimaryButton(text: String, onClick: () -> Unit) {
+fun PrimaryButton(modifier: Modifier=Modifier,onClick: () -> Unit, text: String) {
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             XOGameCustomColors.current.primaryPink.copy(alpha = .7f)
         ),
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Text(
             text = text,
