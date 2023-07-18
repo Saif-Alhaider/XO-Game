@@ -8,6 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.compose.rememberNavController
+import com.example.xogame.ui.screen.XOGameNavGraph
 import com.example.xogame.ui.screen.home.HomeScreen
 import com.example.xogame.ui.theme.XOGameTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +21,8 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         setContent {
             XOGameTheme {
-                HomeScreen()
+                val navController = rememberNavController()
+                XOGameNavGraph(navHostController = navController)
             }
         }
     }
