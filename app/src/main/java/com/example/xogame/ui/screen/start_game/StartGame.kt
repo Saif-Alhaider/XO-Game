@@ -1,7 +1,9 @@
 package com.example.xogame.ui.screen.start_game
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,12 +12,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.xogame.R
 import com.example.xogame.ui.common.composables.MainBackground
 import com.example.xogame.ui.common.composables.OutlinedTextFieldPrimary
@@ -23,12 +31,17 @@ import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 
 @Composable
-fun StartGameScreen() {
-    StartGameContent()
+fun StartGameScreen(viewModel: StartGameViewModel = hiltViewModel(), navController: NavController) {
+    val state = viewModel.state.collectAsState().value
+    StartGameContent(state)
 }
 
 @Composable
-fun StartGameContent() {
+fun StartGameContent(state: StartGameUiState) {
+    val clipboardManager = LocalClipboardManager.current
+    if (state.isFriendActive){
+        Log.i("gg", "StartGameContent: navigate now")
+    }
     Box(Modifier.background(XOGameCustomColors.current.background)) {
         Column(
             Modifier
@@ -46,18 +59,20 @@ fun StartGameContent() {
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(top = 40.dp)
             )
-            OutlinedTextFieldPrimary(onValueChanged = {}, trailingIcon = {
+            OutlinedTextFieldPrimary(trailingIcon = {
                 Image(
                     painter = painterResource(id = R.drawable.ic_copy),
-                    contentDescription = "copy"
+                    contentDescription = "copy",
+                    modifier = Modifier
+                        .clickable { clipboardManager.setText(AnnotatedString((state.roomId))) }
                 )
-            }, modifier = Modifier.padding(top = 16.dp), value = "")
+            }, modifier = Modifier.padding(top = 16.dp), value = state.roomId, enabled = false)
             Text(
                 text = "When your friend joins the game, you'll be ready to have fun playing together",
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall,
                 color = XOGameCustomColors.current.onBackground60,
-                modifier=Modifier.padding(top = 24.dp)
+                modifier = Modifier.padding(top = 24.dp)
             )
         }
         MainBackground()
@@ -67,5 +82,5 @@ fun StartGameContent() {
 @Preview
 @Composable
 fun StartGamePreview() {
-    XOGameTheme { StartGameScreen() }
+    XOGameTheme { StartGameScreen(navController = rememberNavController()) }
 }
