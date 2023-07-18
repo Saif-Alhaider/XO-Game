@@ -28,7 +28,7 @@ class StartGameViewModel @Inject constructor(
 
     private fun createGameSession() {
         viewModelScope.launch {
-            val roomId = xoSocketService.initSession(args.username).data as String
+            val roomId = xoSocketService.initSession(args.username).data?.let { it as String } ?: ""
             updateRoomId(roomId)
             notifyFriendJoin()
         }
@@ -45,7 +45,7 @@ class StartGameViewModel @Inject constructor(
         _state.update { it.copy(roomId = roomId) }
     }
 
-    fun closeSession(){
+    fun closeSession() {
         viewModelScope.launch {
             xoSocketService.closeSession()
         }
