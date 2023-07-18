@@ -1,5 +1,6 @@
 package com.example.xogame.ui.screen.home
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,28 +17,32 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.xogame.ui.common.composables.MainBackground
 import com.example.xogame.ui.common.composables.OutlinedTextFieldPrimary
 import com.example.xogame.ui.screen.home.composables.PrimaryButton
+import com.example.xogame.ui.screen.start_game.navigateToStartGame
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navController: NavController) {
     val state = viewModel.state.collectAsState().value
     HomeContent(
-        onClickStart = viewModel::onClickStartGame,
+        onClickStart = { navController.navigateToStartGame(state.username) },
         updateUsername = viewModel::updateUsername,
-        onClickJoin=viewModel::onClickJoin,
+        onClickJoin = {},
         state = state
     )
 }
 
-@OptIn(ExperimentalTextApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalTextApi::class)
 @Composable
 fun HomeContent(
     updateUsername: (String) -> Unit,
@@ -46,6 +50,7 @@ fun HomeContent(
     onClickJoin: () -> Unit,
     state: HomeUiState
 ) {
+    val context = LocalContext.current
     Box(
         Modifier
             .fillMaxSize()
@@ -81,9 +86,23 @@ fun HomeContent(
             //endregion
             //region start and join game
             Column(Modifier.padding(top = 48.dp)) {
-                PrimaryButton(text = "Start Game", onClick = onClickStart)
+                PrimaryButton(text = "Start Game", onClick = {
+                    if (state.username.isNotBlank()) {
+                        onClickStart()
+                    } else {
+                        Toast.makeText(context, "Please Fill Name First", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                })
                 Spacer(modifier = Modifier.height(12.dp))
-                PrimaryButton(text = "Join Game", onClick = onClickJoin)
+                PrimaryButton(text = "Join Game", onClick = {
+                    if (state.username.isNotBlank()) {
+                        onClickJoin()
+                    } else {
+                        Toast.makeText(context, "Please Fill Name First", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                })
             }
             //endregion
         }
@@ -95,6 +114,6 @@ fun HomeContent(
 @Composable
 fun HomePreview() {
     XOGameTheme {
-        HomeScreen()
+        HomeScreen(navController = rememberNavController())
     }
 }
