@@ -1,7 +1,6 @@
 package com.example.xogame.ui.screen.home
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,7 +35,7 @@ import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(),navController :NavController) {
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navController: NavController) {
     val state = viewModel.state.collectAsState().value
     HomeContent(
         onClickStart = { navController.navigateToStartGame(state.username) },

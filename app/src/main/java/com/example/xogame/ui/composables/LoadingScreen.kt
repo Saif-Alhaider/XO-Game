@@ -28,12 +28,12 @@ fun LoadingScreen() {
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            Text(text ="Loading to enter the game", style = MaterialTheme.typography.bodyMedium)
+            Text(text = "Loading to enter the game", style = MaterialTheme.typography.bodyMedium)
             LottieAnimation(
                 composition = composition, iterations = LottieConstants.IterateForever,
                 modifier = Modifier.size(300.dp),
 
-            )
+                )
         }
     }
 }

@@ -3,7 +3,6 @@ package com.example.xogame.ui.screen.start_game
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -54,38 +53,38 @@ fun StartGameContent(onNavigateBack: () -> Unit, state: StartGameUiState) {
     }
     XoScaffold {
         Box(Modifier.fillMaxSize()) {
-                Column(
-                    Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 16.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.two_kids_playing_chess),
+                    contentDescription = "two kids playing chess"
+                )
+                Text(
+                    text = "Copy the following code and send it to your friend",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(top = 40.dp)
+                )
+                OutlinedTextFieldPrimary(trailingIcon = {
                     Image(
-                        painter = painterResource(id = R.drawable.two_kids_playing_chess),
-                        contentDescription = "two kids playing chess"
+                        painter = painterResource(id = R.drawable.ic_copy),
+                        contentDescription = "copy",
+                        modifier = Modifier
+                            .clickable { clipboardManager.setText(AnnotatedString((state.roomId))) }
                     )
-                    Text(
-                        text = "Copy the following code and send it to your friend",
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(top = 40.dp)
-                    )
-                    OutlinedTextFieldPrimary(trailingIcon = {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_copy),
-                            contentDescription = "copy",
-                            modifier = Modifier
-                                .clickable { clipboardManager.setText(AnnotatedString((state.roomId))) }
-                        )
-                    }, modifier = Modifier.padding(top = 16.dp), value = state.roomId, enabled = false)
-                    Text(
-                        text = "When your friend joins the game, you'll be ready to have fun playing together",
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = XOGameCustomColors.current.onBackground60,
-                        modifier = Modifier.padding(top = 24.dp)
-                    )
-                }
+                }, modifier = Modifier.padding(top = 16.dp), value = state.roomId, enabled = false)
+                Text(
+                    text = "When your friend joins the game, you'll be ready to have fun playing together",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = XOGameCustomColors.current.onBackground60,
+                    modifier = Modifier.padding(top = 24.dp)
+                )
+            }
             AnimatedVisibility(visible = state.isLoading, exit = fadeOut()) {
                 LoadingScreen()
             }
