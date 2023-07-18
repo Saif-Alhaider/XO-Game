@@ -8,11 +8,8 @@ class XORepositoryImpl(private val dataStore: PlayerDatastore) : XORepository {
         dataStore.savePlayerName(playerName)
     }
 
-    override suspend fun getPlayerName(): String? {
+    override fun getPlayerName(): String? {
         return dataStore.getPlayerName()
     }
 
-    override suspend fun clearPlayerName() {
-        dataStore.clearPlayerName()
-    }
 }

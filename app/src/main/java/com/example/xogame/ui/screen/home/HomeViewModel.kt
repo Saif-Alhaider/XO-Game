@@ -19,20 +19,25 @@ class HomeViewModel @Inject constructor(private val xoRepository: XORepository) 
         _state.update { it.copy(username = text) }
     }
 
+    init {
+        updatePlayerName()
+    }
+
+    private fun updatePlayerName(){
+        val playerName = getPlayerName()
+        playerName?.let {
+            _state.update { it.copy(username = playerName) }
+        }
+    }
+
     fun savePlayerName(name: String) {
         viewModelScope.launch {
             xoRepository.savePlayerName(name)
         }
     }
 
-    suspend fun getPlayerName(): String? {
+    fun getPlayerName(): String? {
         return xoRepository.getPlayerName()
-    }
-
-    fun clearPlayerName() {
-        viewModelScope.launch {
-            xoRepository.clearPlayerName()
-        }
     }
 
 }

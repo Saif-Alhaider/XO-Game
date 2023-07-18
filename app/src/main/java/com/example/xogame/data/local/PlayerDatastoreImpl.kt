@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class PlayerDatastoreImpl @Inject constructor(context: Context) : PlayerDatastore {
@@ -28,13 +29,10 @@ class PlayerDatastoreImpl @Inject constructor(context: Context) : PlayerDatastor
         }
     }
 
-    override suspend fun getPlayerName(): String? {
-        return prefDataStore.data.map { preferences -> preferences[PLAYER_KEY] }.first()
-    }
-
-    override suspend fun clearPlayerName() {
-        prefDataStore.edit { preferences ->
-            preferences.remove(PLAYER_KEY)
+    override  fun getPlayerName(): String? {
+        return runBlocking {
+             prefDataStore.data.map { preferences -> preferences[PLAYER_KEY] }.first()
         }
     }
+
 }

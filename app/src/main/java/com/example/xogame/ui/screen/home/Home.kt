@@ -45,8 +45,6 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navController: NavCon
         onClickJoin = { navController.navigateToJoinGame(state.username) },
         state = state,
         savePlayerName = viewModel::savePlayerName,
-        getPlayerName = viewModel::getPlayerName,
-        clearPlayerName = viewModel::clearPlayerName
     )
 }
 
@@ -58,8 +56,6 @@ fun HomeContent(
     onClickJoin: () -> Unit,
     state: HomeUiState,
     savePlayerName: (String) -> Unit,
-    getPlayerName: () -> String,
-    clearPlayerName: () -> Unit
 ) {
     val context = LocalContext.current
     XoScaffold {
@@ -101,6 +97,7 @@ fun HomeContent(
                 Column(Modifier.padding(top = 48.dp)) {
                     PrimaryButton(text = stringResource(R.string.start_game), onClick = {
                         if (state.username.isNotBlank()) {
+                            savePlayerName(state.username)
                             onClickStart()
                         } else {
                             Toast.makeText(context, "Please Fill Name First", Toast.LENGTH_LONG)
@@ -110,6 +107,7 @@ fun HomeContent(
                     Spacer(modifier = Modifier.height(12.dp))
                     PrimaryButton(text = stringResource(R.string.join_game), onClick = {
                         if (state.username.isNotBlank()) {
+                            savePlayerName(state.username)
                             onClickJoin()
                         } else {
                             Toast.makeText(context, "Please Fill Name First", Toast.LENGTH_LONG)
