@@ -3,6 +3,8 @@ package com.example.xogame.data.remote
 import android.util.Log
 import com.example.xogame.data.Game
 import com.example.xogame.data.GameDto
+import com.example.xogame.data.GameTurn
+import com.example.xogame.data.asGame
 import com.example.xogame.data.toGame
 import com.example.xogame.util.ResponseResult
 import com.google.gson.Gson
@@ -78,19 +80,23 @@ class XOSocketServiceImpl @Inject constructor(
     }
 
     @OptIn(ExperimentalSerializationApi::class)
-    override suspend fun observeGame(onFriendNotify: () -> Unit): Flow<Game> {
+    override suspend fun observeGame(onFriendNotify: () -> Unit): Flow<GameTurn> {
         Log.i("gg", "observeGame: working")
         return try {
             socket?.incoming?.receiveAsFlow()?.map {
                 val response = (it as? Frame.Text)?.readText() ?: ""
                 if (response == "Your Friend Joined the game") {
                     onFriendNotify()
+                } else if (response == "Not your turn") {
+                    Log.e("gg", "Not your turn: $response")
                 } else {
                     val gameDto = Json.decodeFromString<GameDto>(response)
-                    gameDto.toGame()
+                    gameDto.asGame()
+                    Log.i("gg", "gameDto: $gameDto")
                 }
-                Game(1, 2)
-            } ?: flow { }
+                GameTurn(1, 2,"X")
+            } ?: flow {
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             Log.i("gg", "observeGame: something went wrong")
@@ -99,10 +105,12 @@ class XOSocketServiceImpl @Inject constructor(
     }
 
     override suspend fun sendXO(game: Game) {
-        Log.i("gg", "sendXO: sending")
+        Log.i("gg", "sendXO: sending: $game")
         try {
             val gameRequest = gson.toJson(game)
             socket?.send(Frame.Text(gameRequest))
+            Log.i("gg", "sendXO: $gameRequest")
+
         } catch (e: Exception) {
             e.printStackTrace()
         }

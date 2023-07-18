@@ -30,16 +30,20 @@ import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 
 @Composable
-fun StartGameScreen(viewModel: StartGameViewModel = hiltViewModel(),navController:NavController) {
+fun StartGameScreen(viewModel: StartGameViewModel = hiltViewModel(), navController: NavController) {
     val state = viewModel.state.collectAsState().value
-    StartGameContent(onNavigateBack = {
-        navController.popBackStack()
-        viewModel.closeSession()
-    }, state)
+    StartGameContent(
+        onNavigateBack = { navController.popBackStack()
+                           viewModel.closeSession() },
+        state
+    )
 }
 
 @Composable
-fun StartGameContent(onNavigateBack: () -> Unit, state: StartGameUiState) {
+fun StartGameContent(
+    onNavigateBack: () -> Unit,
+    state: StartGameUiState
+) {
     val clipboardManager = LocalClipboardManager.current
     if (state.isFriendActive) {
         Log.i("gg", "StartGameContent: navigate now")

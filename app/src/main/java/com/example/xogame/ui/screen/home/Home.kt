@@ -92,23 +92,22 @@ fun HomeContent(
                 //endregion
                 //region start and join game
                 Column(Modifier.padding(top = 48.dp)) {
-                    PrimaryButton(text = stringResource(R.string.start_game), onClick = {
+                    PrimaryButton(text = stringResource(R.string.start_game)) {
                         if (state.username.isNotBlank()) {
                             onClickStart()
                         } else {
                             Toast.makeText(context, "Please Fill Name First", Toast.LENGTH_LONG)
                                 .show()
                         }
-                    })
-                    Spacer(modifier = Modifier.height(12.dp))
-                    PrimaryButton(text = stringResource(R.string.join_game), onClick = {
+                    }
+                    PrimaryButton(text = stringResource(R.string.join_game), modifier = Modifier.padding(top = 12.dp)) {
                         if (state.username.isNotBlank()) {
                             onClickJoin()
                         } else {
                             Toast.makeText(context, "Please Fill Name First", Toast.LENGTH_LONG)
                                 .show()
                         }
-                    })
+                    }
                 }
                 //endregion
             }
