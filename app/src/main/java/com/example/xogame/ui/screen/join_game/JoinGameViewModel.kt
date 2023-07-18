@@ -37,7 +37,7 @@ class JoinGameViewModel @Inject constructor(
         }
     }
 
-    fun closeSession(){
+    fun closeSession() {
         viewModelScope.launch {
             xoSocketService.closeSession()
         }

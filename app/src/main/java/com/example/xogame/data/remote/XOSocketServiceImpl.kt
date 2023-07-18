@@ -13,6 +13,8 @@ import io.ktor.http.cio.websocket.Frame
 import io.ktor.http.cio.websocket.WebSocketSession
 import io.ktor.http.cio.websocket.close
 import io.ktor.http.cio.websocket.readText
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -53,12 +55,14 @@ class XOSocketServiceImpl @Inject constructor(
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override suspend fun joinSession(username: String, roomId: String): ResponseResult<Unit> {
         return try {
             if (socket != null) {
                 socket = null
             }
             socket = client.webSocketSession { url("$BASE_URL/$username/$roomId") }
+            delay(1000)
             Log.i("gg", "joinSession: ${socket?.isActive}")
             if (socket?.isActive == true) {
                 Log.i(
@@ -75,6 +79,7 @@ class XOSocketServiceImpl @Inject constructor(
             Log.i("gg", "joinSession:$e ")
             ResponseResult.Error(error = e.localizedMessage ?: "unknown error")
         }
+
     }
 
     @OptIn(ExperimentalSerializationApi::class)
