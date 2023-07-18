@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class PlayerDatasourceImpl @Inject constructor(context: Context) : PlayerDatasource {
+class PlayerDatastoreImpl @Inject constructor(context: Context) : PlayerDatastore {
 
     companion object {
         private const val PREFERENCES_FILE_NAME = "xo_game"

@@ -1,8 +1,8 @@
 package com.example.xogame.di
 
 import android.content.Context
-import com.example.xogame.data.local.PlayerDatasource
-import com.example.xogame.data.local.PlayerDatasourceImpl
+import com.example.xogame.data.local.PlayerDatastore
+import com.example.xogame.data.local.PlayerDatastoreImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,7 +16,7 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun providePlayerDataStore(@ApplicationContext context: Context): PlayerDatasource {
-        return PlayerDatasourceImpl(context)
+    fun providePlayerDataStore(@ApplicationContext context: Context): PlayerDatastore {
+        return PlayerDatastoreImpl(context)
     }
 }
