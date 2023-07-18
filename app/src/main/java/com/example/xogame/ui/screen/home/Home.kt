@@ -27,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.xogame.ui.common.composables.MainBackground
 import com.example.xogame.ui.common.composables.OutlinedTextFieldPrimary
 import com.example.xogame.ui.screen.home.composables.PrimaryButton
+import com.example.xogame.ui.screen.join_game.navigateToJoinGame
 import com.example.xogame.ui.screen.start_game.navigateToStartGame
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
@@ -37,7 +38,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navController: NavCon
     HomeContent(
         onClickStart = { navController.navigateToStartGame(state.username) },
         updateUsername = viewModel::updateUsername,
-        onClickJoin = {},
+        onClickJoin = { navController.navigateToJoinGame(state.username) },
         state = state
     )
 }
