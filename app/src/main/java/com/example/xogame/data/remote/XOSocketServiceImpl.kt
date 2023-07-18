@@ -84,24 +84,28 @@ class XOSocketServiceImpl @Inject constructor(
         Log.i("gg", "observeGame: working")
         return try {
             socket?.incoming?.receiveAsFlow()?.map {
-                when (val response = (it as? Frame.Text)?.readText() ?: "") {
+                val value:GameTurn? = when (val response = (it as? Frame.Text)?.readText() ?: "") {
                     "Your Friend Joined the game" -> {
                         onFriendNotify()
+                        null
                     }
                     "Not your turn" -> {
                         Log.e("gg", "Not your turn: $response")
+                        null
                     }
                     else -> {
                         try {
                             val gameDto = Json.decodeFromString<GameDto>(response)
-                            gameDto.asGame()
                             Log.i("gg", "gameDto: $gameDto")
+                            gameDto.asGame()
+
                         }catch (e: Exception){
                             Log.i("gg", "${e.message}")
+                            null
                         }
                     }
                 }
-                null
+                value
             } ?: flow {
             }
         } catch (e: Exception) {
