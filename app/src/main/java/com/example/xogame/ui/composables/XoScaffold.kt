@@ -8,12 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.example.xogame.ui.theme.XOGameCustomColors
 
@@ -25,7 +23,8 @@ fun XoScaffold(
     Box(
         Modifier
             .background(XOGameCustomColors.current.background)
-            .fillMaxSize()) {
+            .fillMaxSize()
+    ) {
 
         Box(Modifier.fillMaxSize()) {
             Spacer(

@@ -1,13 +1,11 @@
 package com.example.xogame.ui.screen.join_game
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +24,7 @@ import com.example.xogame.R
 import com.example.xogame.ui.composables.OutlinedTextFieldPrimary
 import com.example.xogame.ui.composables.XoScaffold
 import com.example.xogame.ui.screen.home.composables.PrimaryButton
+import com.example.xogame.ui.screen.play.navigateToPlay
 import com.example.xogame.ui.theme.XOGameTheme
 import com.example.xogame.util.createToast
 
@@ -39,6 +38,10 @@ fun JoinGameScreen(viewModel: JoinGameViewModel = hiltViewModel(), navController
             navController.popBackStack()
             viewModel.closeSession()
         },
+        onJoinSession = {
+            navController.navigateToPlay("O")
+            viewModel.dissableIsJoin()
+        },
         state = state
     )
 }
@@ -48,12 +51,13 @@ fun JoinGameContent(
     updateRoomId: (String) -> Unit,
     onClickJoin: () -> Unit,
     onNavigateBack: () -> Unit,
+    onJoinSession: () -> Unit,
     state: JoinGameUiState
 ) {
     val context = LocalContext.current
 
     if (state.isJoined) {
-        Log.i("gg", "JoinGameContent: navigate to game")
+        onJoinSession()
     }
     BackHandler {
         onNavigateBack()
@@ -80,11 +84,11 @@ fun JoinGameContent(
                 OutlinedTextFieldPrimary(
                     modifier = Modifier
                         .padding(top = 16.dp)
-                        .height(56.dp)
                         .fillMaxWidth(),
                     value = state.roomId,
                     enabled = true,
-                    onValueChanged = updateRoomId
+                    onValueChanged = updateRoomId,
+                    placeHolder = "Enter Room Id"
                 )
             }
             PrimaryButton(

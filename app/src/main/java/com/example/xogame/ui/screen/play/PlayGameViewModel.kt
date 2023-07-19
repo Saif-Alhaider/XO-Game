@@ -14,6 +14,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,14 +27,25 @@ class PlayGameViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = MutableStateFlow(PlayUiState())
     val state = _state.asStateFlow()
+    private val args = PlayArgs(savedStateHandle)
 
     init {
+        updateCharacter()
+        if (_state.value.currentPlayer == "O") disablePosition()
+        observeGame()
+        observeWinning()
+    }
+
+    private fun updateCharacter() {
+        _state.update { it.copy(currentPlayer = args.character) }
+    }
+
+    private fun observeGame() {
 
         viewModelScope.launch {
-            xoSocketService.initSession("Asiasama")
             try {
                 xoSocketService.observeGame(onFriendNotify = {}).collectLatest { game ->
-
+                    Log.i("gg", "observeGame: $game")
                     if (game != null) {
                         val list = _state.value.board.toMutableList()
                         val newRow = list[game.row].toMutableList()
@@ -44,6 +57,7 @@ class PlayGameViewModel @Inject constructor(
                         Log.e("TAG", "init: ${_state.value.board}")
                         Log.e("TAG", "init: ${game.row} ${game.column}")
                     }
+
                 }
             } catch (e: FriendJoinedTheGameException) {
                 Log.e("TAG", "FriendJoinedTheGameException: ${e.message}")
@@ -53,15 +67,11 @@ class PlayGameViewModel @Inject constructor(
                 Log.e("TAG", "NotYourTurnException: ${e.message}")
             }
         }
-        observeWinning()
-
     }
-
-
 
     private fun observeWinning() {
         viewModelScope.launch {
-            _state.collectLatest {
+            _state.map { it.board }.distinctUntilChanged().collectLatest {
                 if (winningPositions(_state.value.board).isNotEmpty()) {
                     val newState =
                         winningPositions(_state.value.board).fold(state.value) { accState, (row, col) ->

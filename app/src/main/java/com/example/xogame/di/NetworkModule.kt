@@ -1,5 +1,8 @@
 package com.example.xogame.di
 
+import com.example.xogame.data.XORepository
+import com.example.xogame.data.XORepositoryImpl
+import com.example.xogame.data.local.PlayerDatastore
 import com.example.xogame.data.remote.XOSocketService
 import com.example.xogame.data.remote.XOSocketServiceImpl
 import com.google.gson.Gson
@@ -18,7 +21,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
+object NetworkModule {
     @Provides
     @Singleton
     fun provideHttpClient(): HttpClient {
@@ -42,5 +45,11 @@ class NetworkModule {
     @Singleton
     fun provideXOSocketService(client: HttpClient, gson: Gson): XOSocketService {
         return XOSocketServiceImpl(client, gson)
+    }
+
+    @Provides
+    @Singleton
+    fun providesXORepository(dataStore:PlayerDatastore):XORepository{
+        return XORepositoryImpl(dataStore)
     }
 }

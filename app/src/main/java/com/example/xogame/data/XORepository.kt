@@ -1,6 +1,6 @@
-package com.example.xogame.data.local
+package com.example.xogame.data
 
-interface PlayerDatastore {
+interface XORepository {
     suspend fun savePlayerName(playerName: String)
     fun getPlayerName(): String?
 }

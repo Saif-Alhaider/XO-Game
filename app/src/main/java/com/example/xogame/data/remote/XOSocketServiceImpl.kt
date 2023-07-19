@@ -18,6 +18,7 @@ import io.ktor.http.cio.websocket.Frame
 import io.ktor.http.cio.websocket.WebSocketSession
 import io.ktor.http.cio.websocket.close
 import io.ktor.http.cio.websocket.readText
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -60,10 +61,11 @@ class XOSocketServiceImpl @Inject constructor(
 
     override suspend fun joinSession(username: String, roomId: String): ResponseResult<Unit> {
         return try {
-            if (socket != null) {
-                socket = null
-            }
+//            if (socket != null) {
+//                socket = null
+//            }
             socket = client.webSocketSession { url("$BASE_URL/$username/$roomId") }
+            delay(1000)
             Log.i("gg", "joinSession: ${socket?.isActive}")
             if (socket?.isActive == true) {
                 Log.i(
@@ -115,6 +117,7 @@ class XOSocketServiceImpl @Inject constructor(
                 }
                 value
             } ?: flow {
+                Log.i("gg", "observeGame: empty flow \n${socket}")
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -140,6 +143,6 @@ class XOSocketServiceImpl @Inject constructor(
     }
 
     companion object {
-        const val BASE_URL = "ws://192.168.0.117:8080/xo-game"
+        const val BASE_URL = "ws://xo-moon-cake-hc9jd.ondigitalocean.app/xo-game"
     }
 }

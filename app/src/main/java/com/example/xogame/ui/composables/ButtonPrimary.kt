@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.example.xogame.ui.theme.XOGameCustomColors
 
 @Composable
-fun PrimaryButton(modifier: Modifier=Modifier, text: String,onClick: () -> Unit) {
+fun PrimaryButton(modifier: Modifier = Modifier,  text: String,onClick: () -> Unit) {
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(

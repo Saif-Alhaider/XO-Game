@@ -2,8 +2,7 @@ package com.example.xogame.ui.screen.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.xogame.data.Game
-import com.example.xogame.data.remote.XOSocketServiceImpl
+import com.example.xogame.data.XORepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,9 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-
-) : ViewModel() {
+class HomeViewModel @Inject constructor(private val xoRepository: XORepository) : ViewModel() {
     private val _state = MutableStateFlow(HomeUiState())
     val state = _state.asStateFlow()
 
@@ -23,5 +20,25 @@ class HomeViewModel @Inject constructor(
         _state.update { it.copy(username = text) }
     }
 
+    init {
+        updatePlayerName()
+    }
+
+    private fun updatePlayerName(){
+        val playerName = getPlayerName()
+        playerName?.let {
+            _state.update { it.copy(username = playerName) }
+        }
+    }
+
+    fun savePlayerName(name: String) {
+        viewModelScope.launch {
+            xoRepository.savePlayerName(name)
+        }
+    }
+
+    fun getPlayerName(): String? {
+        return xoRepository.getPlayerName()
+    }
 
 }
