@@ -5,10 +5,10 @@ import com.example.xogame.data.Game
 import com.example.xogame.data.GameDto
 import com.example.xogame.data.GameTurn
 import com.example.xogame.data.asGame
-import com.example.xogame.data.toGame
-import com.example.xogame.data.util.FriendJoinedTheGameException
+import com.example.xogame.data.util.JoinedTheGameWithException
 import com.example.xogame.data.util.NotYourTurnException
 import com.example.xogame.data.util.PositionIsNotEmptyException
+import com.example.xogame.data.util.WinnerException
 import com.example.xogame.util.ResponseResult
 import com.google.gson.Gson
 import io.ktor.client.HttpClient
@@ -91,10 +91,11 @@ class XOSocketServiceImpl @Inject constructor(
             socket?.incoming?.receiveAsFlow()?.map {
                 val response = (it as? Frame.Text)?.readText() ?: ""
                 val value:GameTurn? = when {
-                    response.contains("Your Friend Joined the game #")  -> {
+                    response.contains("players :")  -> {
                         onFriendNotify()
-                        val player2Name = response.substringAfter("#")
-                        throw FriendJoinedTheGameException(player2Name)
+                        val secondPlayerName = response.substringAfter("#")
+                        Log.e("gg", "$secondPlayerName")
+                        throw JoinedTheGameWithException(secondPlayerName)
                     }
                     response.contains( "Not your turn")   -> {
                         Log.e("gg", "Not your turn: $response")
@@ -103,6 +104,9 @@ class XOSocketServiceImpl @Inject constructor(
                     response.contains( "Position is already taken. Try again.") -> {
                         Log.e("gg", "Position is already taken. Try again.: $response")
                         throw PositionIsNotEmptyException()
+                    }
+                    response.contains( "win") -> {
+                        throw WinnerException(response.substringAfter("#"))
                     }
                     else -> {
                         try {

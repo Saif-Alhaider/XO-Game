@@ -52,7 +52,13 @@ fun PlayGameContent(
 
         Box {
 
-            GameResultDialog(showDialog = false, winner = null, modifier = Modifier.zIndex(2f))
+            if (state.winner.isNotEmpty()) {
+                GameResultDialog(
+                    showDialog = true,
+                    winner = state.winner,
+                    modifier = Modifier.zIndex(2f)
+                )
+            }
 
             Column(
                 modifier = Modifier.fillMaxHeight(),
@@ -83,7 +89,7 @@ fun PlayGameContent(
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         PlayerLabel(
-                            playerName = "Meme",
+                            playerName = state.firstPlayerName,
                             playerSymbol = R.drawable.ic_x_palyer,
                             colorName = XOGameCustomColors.current.primaryBlue,
                         )
@@ -95,7 +101,7 @@ fun PlayGameContent(
                             color = XOGameCustomColors.current.onBackground87
                         )
                         PlayerLabel(
-                            playerName = state.player2Name,
+                            playerName = state.secondPlayerName,
                             playerSymbol = R.drawable.ic_o_player,
                             colorName = XOGameCustomColors.current.primaryPink,
                         )

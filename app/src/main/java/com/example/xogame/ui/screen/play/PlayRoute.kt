@@ -6,14 +6,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.xogame.ui.screen.AppDestination
 
-const val ROUTE = "board game"
+val ROUTE = AppDestination.BoardGame.route
 
 
 fun NavController.navigateToPlay(character: String,secondPlayerName : String) {
-    navigate("$ROUTE/$character/$secondPlayerName"){
-        this.popUpToRoute
-    }
+    navigate("$ROUTE/$character/$secondPlayerName")
 }
 
 fun NavGraphBuilder.playRoute(navController: NavController) {

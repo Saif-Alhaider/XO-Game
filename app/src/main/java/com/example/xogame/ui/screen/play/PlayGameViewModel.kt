@@ -6,10 +6,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xogame.data.Game
+import com.example.xogame.data.XORepository
 import com.example.xogame.data.remote.XOSocketService
-import com.example.xogame.data.util.FriendJoinedTheGameException
+import com.example.xogame.data.util.JoinedTheGameWithException
 import com.example.xogame.data.util.NotYourTurnException
 import com.example.xogame.data.util.PositionIsNotEmptyException
+import com.example.xogame.data.util.WinnerException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,6 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PlayGameViewModel @Inject constructor(
     private val xoSocketService: XOSocketService,
+    private val xoRepository: XORepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val _state = MutableStateFlow(PlayUiState())
@@ -34,7 +37,7 @@ class PlayGameViewModel @Inject constructor(
         if (_state.value.currentPlayer == "O") disablePosition()
         observeGame()
         observeWinning()
-        _state.update { it.copy(player2Name = args.secondPlayerName) }
+        _state.update { it.copy(secondPlayerName = args.secondPlayerName, firstPlayerName = xoRepository.getPlayerName() ?: "player") }
     }
 
     private fun updateCharacter() {
@@ -63,6 +66,13 @@ class PlayGameViewModel @Inject constructor(
             } catch (e: PositionIsNotEmptyException) {
                 Log.e("TAG", "PositionIsNotEmptyException: ${e.message}")
             } catch (e: NotYourTurnException) {
+                Log.e("TAG", "NotYourTurnException: ${e.message}")
+            } catch (e: JoinedTheGameWithException) {
+                _state.update { it.copy(firstPlayerName = e.playerName) }
+                Log.e("TAG", "NotYourTurnException: ${e.message}")
+            }
+            catch (e: WinnerException) {
+                _state.update { it.copy(winner = e.winnerName) }
                 Log.e("TAG", "NotYourTurnException: ${e.message}")
             }
         }

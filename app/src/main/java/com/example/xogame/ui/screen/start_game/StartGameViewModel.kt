@@ -4,8 +4,9 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.xogame.data.XORepository
 import com.example.xogame.data.remote.XOSocketService
-import com.example.xogame.data.util.FriendJoinedTheGameException
+import com.example.xogame.data.util.JoinedTheGameWithException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class StartGameViewModel @Inject constructor(
     private val xoSocketService: XOSocketService,
+    private val xoRepository: XORepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _state = MutableStateFlow(StartGameUiState())
@@ -27,6 +29,7 @@ class StartGameViewModel @Inject constructor(
 
     init {
         createGameSession()
+//        _state.update { it.copy(player2Name = ) }
     }
 
     private fun createGameSession() {
@@ -46,9 +49,8 @@ class StartGameViewModel @Inject constructor(
                 xoSocketService.observeGame(onFriendNotify = {
                     _state.update { it.copy(isFriendActive = true) }
                 }).collectLatest {}
-            } catch (e: FriendJoinedTheGameException) {
-                _state.update { it.copy(player2Name = e.player2Name) }
-                Log.d("TAG", "notifyFriendJoin: ${e.player2Name}")
+            } catch (e: JoinedTheGameWithException) {
+                _state.update { it.copy(player2Name = e.playerName) }
                 Log.d("TAG", "notifyFriendJoin: ${e.message}")
             }
         }

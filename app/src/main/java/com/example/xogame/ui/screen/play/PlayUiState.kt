@@ -11,7 +11,8 @@ data class PlayUiState(
     val currentPlayer: String = "X",
     val winner: String = "",
     val isActive: Boolean = currentPlayer == "X",
-    val player2Name : String = ""
+    val firstPlayerName : String = "",
+    val secondPlayerName : String = ""
 ) {
     data class XOCard(
         val value: String = "",

@@ -1,8 +1,10 @@
 package com.example.xogame.ui.screen.join_game
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.xogame.data.XORepository
 import com.example.xogame.data.remote.XOSocketService
 import com.example.xogame.util.ResponseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class JoinGameViewModel @Inject constructor(
     private val xoSocketService: XOSocketService,
+    private val xoRepository: XORepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _state = MutableStateFlow(JoinGameUiState())
@@ -22,6 +25,10 @@ class JoinGameViewModel @Inject constructor(
 
     private val args = JoinGameArgs(savedStateHandle)
 
+    init {
+        _state.update { it.copy(playerName = xoRepository.getPlayerName() ?: "player") }
+        Log.d("gg", ": ${_state.value.playerName}")
+    }
     fun updateRoomId(roomId: String) {
         _state.update { it.copy(roomId = roomId) }
     }

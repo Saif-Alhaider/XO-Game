@@ -39,7 +39,7 @@ fun JoinGameScreen(viewModel: JoinGameViewModel = hiltViewModel(), navController
             viewModel.closeSession()
         },
         onJoinSession = {
-            navController.navigateToPlay("O","")
+            navController.navigateToPlay("O", state.playerName)
             viewModel.dissableIsJoin()
         },
         state = state

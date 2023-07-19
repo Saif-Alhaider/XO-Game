@@ -2,5 +2,6 @@ package com.example.xogame.ui.screen.join_game
 
 data class JoinGameUiState(
     val roomId: String = "",
-    val isJoined: Boolean = false
+    val isJoined: Boolean = false,
+    val playerName : String = ""
 )
