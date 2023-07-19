@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
@@ -87,6 +88,7 @@ fun StartGameContent(
                     Image(
                         painter = painterResource(id = R.drawable.ic_copy),
                         contentDescription = "copy",
+                        colorFilter = ColorFilter.tint(XOGameCustomColors.current.onBackground60),
                         modifier = Modifier
                             .clickable { clipboardManager.setText(AnnotatedString((state.roomId))) }
                     )
