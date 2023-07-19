@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.xogame.R
@@ -55,6 +56,7 @@ fun PlayCard(
             Image(
                 painter = it,
                 contentDescription = null,
+                colorFilter = if (value.color != Color.Transparent) ColorFilter.tint(color = Color.White) else null,
                 modifier = Modifier
                     .size(64.dp)
                     .align(Alignment.Center)
