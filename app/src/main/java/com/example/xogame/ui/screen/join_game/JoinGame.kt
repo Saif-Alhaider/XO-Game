@@ -88,9 +88,9 @@ fun JoinGameContent(
                         .padding(top = 16.dp)
                         .fillMaxWidth(),
                     value = state.roomId,
-                    readOnly = true,
+                    readOnly = false,
                     onValueChanged = updateRoomId,
-                    placeHolder = "Enter Room Id"
+                    placeHolder = "Enter Room Id",
                 )
             }
             PrimaryButton(
