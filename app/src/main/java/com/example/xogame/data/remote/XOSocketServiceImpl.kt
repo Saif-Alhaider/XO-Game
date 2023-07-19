@@ -57,11 +57,10 @@ class XOSocketServiceImpl @Inject constructor(
 
     override suspend fun joinSession(username: String, roomId: String): ResponseResult<Unit> {
         return try {
-            if (socket != null) {
-                socket = null
-            }
+//            if (socket != null) {
+//                socket = null
+//            }
             socket = client.webSocketSession { url("$BASE_URL/$username/$roomId") }
-            Log.i("gg", "joinSession: ${socket?.isActive}")
             if (socket?.isActive == true) {
                 Log.i(
                     "gg",
@@ -107,6 +106,7 @@ class XOSocketServiceImpl @Inject constructor(
                 }
                 value
             } ?: flow {
+                Log.i("gg", "observeGame: empty flow \n${socket}")
             }
         } catch (e: Exception) {
             e.printStackTrace()

@@ -39,9 +39,8 @@ class PlayGameViewModel @Inject constructor(
     private fun observeGame() {
         try {
             viewModelScope.launch {
-//                xoSocketService.initSession("Asiasama")
                 xoSocketService.observeGame(onFriendNotify = {}).collectLatest { game ->
-
+                    Log.i("gg", "observeGame: $game")
                     if (game != null) {
                         val list = _state.value.board.toMutableList()
                         val newRow = list[game.row].toMutableList()
