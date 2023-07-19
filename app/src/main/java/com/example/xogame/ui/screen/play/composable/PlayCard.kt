@@ -50,7 +50,6 @@ fun PlayCard(
                     "O" -> painterResource(
                         id = R.drawable.ic_o_player
                     )
-
                     else -> null
                 })?.let {
             Image(

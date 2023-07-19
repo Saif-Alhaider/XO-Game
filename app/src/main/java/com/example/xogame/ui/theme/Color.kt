@@ -15,6 +15,7 @@ val OnBackgroundLight36 = Color(0x99000000)
 val OnButton = Color(0xDEFFFFFF)
 val CardLight = Color(0x5CFFFFFF)
 val GameCardLight = Color(0xFFFAFAFA)
+val GameCardDark = Color(0xFF041014)
 
 val BackgroundDark = Color(0xFF000000)
 val OnBackgroundDark87 = Color(0xDEFFFFFF)

@@ -53,7 +53,7 @@ private val DarkCustomColorPlate = CustomColorsPalette(
     onBackground36 = OnBackgroundDark36,
     onButton = OnButton,
     card = CardLight,
-    gameCard = GameCardLight
+    gameCard = GameCardDark
 )
 
 @SuppressLint("CompositionLocalNaming")
