@@ -4,17 +4,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.xogame.R
 import com.example.xogame.ui.composables.XoScaffold
 import com.example.xogame.ui.screen.play.composable.GameResultDialog
@@ -31,12 +30,24 @@ import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 
 @Composable
-fun PlayGameScreen() {
-    PlayGameContent()
+fun PlayGameScreen(
+    viewModel: PlayGameViewModel = hiltViewModel(),
+) {
+    val state = viewModel.state.collectAsState().value
+    PlayGameContent(
+        state = state,
+        onClickSquare = viewModel::onClickSquare,
+        onClickCard = viewModel::disablePosition
+    )
 }
 
 @Composable
-fun PlayGameContent() {
+fun PlayGameContent(
+    state: PlayUiState,
+    onClickSquare: (Int, Int) -> Unit,
+    onClickCard: () -> Unit
+
+) {
     XoScaffold {
 
         Box {
@@ -90,16 +101,27 @@ fun PlayGameContent() {
                         )
                     }
                 }
-
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(3),
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                Column(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-
-                    items(9, key = { it }) {
-                        PlayCard(modifier = Modifier)
+                    state.board.forEachIndexed { row, strings ->
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            strings.forEachIndexed { column, _ ->
+                                PlayCard(
+                                    modifier = Modifier,
+                                    value = state.board[row][column],
+                                    onClick = { onClickSquare(row, column) },
+                                    playerTurn = state.currentPlayer,
+                                    isActive = state.isActive,
+                                    onClickCard = onClickCard
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -112,3 +134,5 @@ fun PlayGameContent() {
 fun StartGamePreview() {
     XOGameTheme { PlayGameScreen() }
 }
+
+

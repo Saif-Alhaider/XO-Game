@@ -36,8 +36,10 @@ class JoinGameViewModel @Inject constructor(
             }
         }
     }
-
-    fun closeSession() {
+    fun dissableIsJoin(){
+        _state.update{it.copy(isJoined = false)}
+    }
+    fun closeSession(){
         viewModelScope.launch {
             xoSocketService.closeSession()
         }
