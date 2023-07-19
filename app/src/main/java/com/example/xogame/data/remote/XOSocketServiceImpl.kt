@@ -87,16 +87,17 @@ class XOSocketServiceImpl @Inject constructor(
         Log.i("gg", "observeGame: working")
         return try {
             socket?.incoming?.receiveAsFlow()?.map {
-                val value:GameTurn? = when (val response = (it as? Frame.Text)?.readText() ?: "") {
-                    "Your Friend Joined the game" -> {
+                val response = (it as? Frame.Text)?.readText() ?: ""
+                val value:GameTurn? = when {
+                    response.contains("Your Friend Joined the game")  -> {
                         onFriendNotify()
                         throw FriendJoinedTheGameException()
                     }
-                    "Not your turn" -> {
+                    response.contains( "Not your turn")   -> {
                         Log.e("gg", "Not your turn: $response")
                         throw NotYourTurnException()
                     }
-                    "Position is already taken. Try again." -> {
+                    response.contains( "Position is already taken. Try again.") -> {
                         Log.e("gg", "Position is already taken. Try again.: $response")
                         throw PositionIsNotEmptyException()
                     }
