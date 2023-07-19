@@ -26,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.xogame.R
 import com.example.xogame.ui.composables.OutlinedTextFieldPrimary
 import com.example.xogame.ui.composables.XoScaffold
+import com.example.xogame.ui.screen.play.navigateToPlay
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 
@@ -33,8 +34,14 @@ import com.example.xogame.ui.theme.XOGameTheme
 fun StartGameScreen(viewModel: StartGameViewModel = hiltViewModel(), navController: NavController) {
     val state = viewModel.state.collectAsState().value
     StartGameContent(
-        onNavigateBack = { navController.popBackStack()
-                           viewModel.closeSession() },
+        onNavigateBack = {
+            navController.popBackStack()
+            viewModel.closeSession()
+        },
+        onFriendNotify = {
+            navController.navigateToPlay("X")
+            viewModel.disableFriend()
+        },
         state
     )
 }
@@ -42,11 +49,13 @@ fun StartGameScreen(viewModel: StartGameViewModel = hiltViewModel(), navControll
 @Composable
 fun StartGameContent(
     onNavigateBack: () -> Unit,
+    onFriendNotify: () -> Unit,
     state: StartGameUiState
 ) {
     val clipboardManager = LocalClipboardManager.current
     if (state.isFriendActive) {
         Log.i("gg", "StartGameContent: navigate now")
+        onFriendNotify()
     }
     BackHandler {
         onNavigateBack()

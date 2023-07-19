@@ -98,11 +98,11 @@ class XOSocketServiceImpl @Inject constructor(
                             val gameDto = Json.decodeFromString<GameDto>(response)
                             Log.i("gg", "gameDto: $gameDto")
                             gameDto.asGame()
-
                         }catch (e: Exception){
                             Log.i("gg", "${e.message}")
                             null
                         }
+
                     }
                 }
                 value

@@ -11,6 +11,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,11 +24,22 @@ class PlayGameViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = MutableStateFlow(PlayUiState())
     val state = _state.asStateFlow()
+    private val args = PlayArgs(savedStateHandle)
 
     init {
+        updateCharacter()
+        observeGame()
+        observeWinning()
+    }
+
+    private fun updateCharacter() {
+        _state.update { it.copy(currentPlayer = args.character) }
+    }
+
+    private fun observeGame() {
         try {
             viewModelScope.launch {
-                xoSocketService.initSession("Asiasama")
+//                xoSocketService.initSession("Asiasama")
                 xoSocketService.observeGame(onFriendNotify = {}).collectLatest { game ->
 
                     if (game != null) {
@@ -46,16 +59,16 @@ class PlayGameViewModel @Inject constructor(
         } catch (e: Exception) {
             Log.e("TAG", "init error: ${e.message}")
         }
-        observeWinning()
     }
 
     private fun observeWinning() {
         viewModelScope.launch {
-            _state.collectLatest {
+            _state.map { it.board }.distinctUntilChanged().collectLatest {
                 if (winningPositions(_state.value.board).isNotEmpty()) {
-                    val newState = winningPositions(_state.value.board).fold(state.value) { accState, (row, col) ->
-                        updateColor(accState, row, col)
-                    }
+                    val newState =
+                        winningPositions(_state.value.board).fold(state.value) { accState, (row, col) ->
+                            updateColor(accState, row, col)
+                        }
                     _state.update { it.copy(board = newState.board) }
                 }
                 Log.i("gg", "winning pos:${winningPositions(_state.value.board)} ")
@@ -63,6 +76,7 @@ class PlayGameViewModel @Inject constructor(
             }
         }
     }
+
     private fun updateColor(state: PlayUiState, row: Int, col: Int): PlayUiState {
         val updatedBoard = state.board.mapIndexed { rowIndex, rowList ->
             rowList.mapIndexed { colIndex, card ->
