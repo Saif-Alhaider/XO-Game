@@ -28,6 +28,7 @@ class PlayGameViewModel @Inject constructor(
 
     init {
         updateCharacter()
+        if (_state.value.currentPlayer == "O") disablePosition()
         observeGame()
         observeWinning()
     }
