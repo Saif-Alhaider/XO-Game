@@ -116,7 +116,7 @@ fun PlayGameContent(
                                     modifier = Modifier,
                                     value = state.board[row][column],
                                     onClick = { onClickSquare(row, column) },
-                                    playerTurn = state.turn,
+                                    playerTurn = state.currentPlayer,
                                     isActive = state.isActive,
                                     onClickCard = onClickCard
                                 )

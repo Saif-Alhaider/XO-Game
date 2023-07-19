@@ -1,6 +1,7 @@
 package com.example.xogame.ui.screen.play
 
 import android.util.Log
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,7 +32,9 @@ class PlayGameViewModel @Inject constructor(
                     if (game != null) {
                         val list = _state.value.board.toMutableList()
                         val newRow = list[game.row].toMutableList()
-                        newRow[game.column] = if (_state.value.turn == "X") "O" else "X"
+                        newRow[game.column] =
+                            newRow[game.column].copy(value = if (_state.value.currentPlayer == "X") "O" else "X")
+
                         list[game.row] = newRow
                         _state.update { it.copy(board = list, isActive = true) }
                         Log.e("TAG", "init: ${_state.value.board}")
@@ -49,9 +52,28 @@ class PlayGameViewModel @Inject constructor(
     private fun observeWinning() {
         viewModelScope.launch {
             _state.collectLatest {
+                if (winningPositions(_state.value.board).isNotEmpty()) {
+                    val newState = winningPositions(_state.value.board).fold(state.value) { accState, (row, col) ->
+                        updateColor(accState, row, col)
+                    }
+                    _state.update { it.copy(board = newState.board) }
+                }
                 Log.i("gg", "winning pos:${winningPositions(_state.value.board)} ")
+                Log.i("gg", "board:${_state.value.board}")
             }
         }
+    }
+    private fun updateColor(state: PlayUiState, row: Int, col: Int): PlayUiState {
+        val updatedBoard = state.board.mapIndexed { rowIndex, rowList ->
+            rowList.mapIndexed { colIndex, card ->
+                if (rowIndex == row && colIndex == col) {
+                    card.copy(color = if (card.value == "X") Color.Blue else Color.Magenta)
+                } else {
+                    card
+                }
+            }
+        }
+        return state.copy(board = updatedBoard)
     }
 
     fun disablePosition() {
@@ -66,7 +88,8 @@ class PlayGameViewModel @Inject constructor(
             viewModelScope.launch {
                 val list = _state.value.board.toMutableList()
                 val newRow = list[row].toMutableList()
-                newRow[column] = _state.value.turn
+                newRow[column] =
+                    newRow[column].copy(value = _state.value.currentPlayer)
                 list[row] = newRow
 
 
@@ -88,14 +111,14 @@ class PlayGameViewModel @Inject constructor(
         }
     }
 
-    private fun winningPositions(list: List<List<String>>): List<List<Int>> {
+    private fun winningPositions(list: List<List<PlayUiState.XOCard>>): List<Pair<Int, Int>> {
         val winningRows = mutableListOf<List<Int>>()
         val winningColumns = mutableListOf<List<Int>>()
         val diagonal = mutableListOf<List<Int>>()
 
         // horizontal
         for ((rowIndex, row) in list.withIndex()) {
-            if (row.all { it.isNotBlank() && it == row[0] })
+            if (row.all { it.value.isNotBlank() && it == row[0] })
                 winningRows.addAll(
                     listOf(
                         listOf(rowIndex, 0),
@@ -106,7 +129,7 @@ class PlayGameViewModel @Inject constructor(
         }
         //vertical
         for ((colIndex, _) in list.withIndex()) {
-            if (list.all { it[colIndex].isNotBlank() && it[colIndex] == list[0][colIndex] }) {
+            if (list.all { it[colIndex].value.isNotBlank() && it[colIndex] == list[0][colIndex] }) {
                 winningColumns.addAll(
                     listOf(
                         listOf(0, colIndex),
@@ -116,9 +139,9 @@ class PlayGameViewModel @Inject constructor(
                 )
             }
         }
-
-        if ((list[0][0] == list[1][1] && list[1][1] == list[2][2]) && (list[0][0].isNotBlank()
-                    && list[1][1].isNotBlank() && list[2][2].isNotBlank())
+        // left diagonal
+        if ((list[0][0].value == list[1][1].value && list[1][1].value == list[2][2].value) && (list[0][0].value.isNotBlank()
+                    && list[1][1].value.isNotBlank() && list[2][2].value.isNotBlank())
         )
             diagonal.addAll(
                 listOf(
@@ -127,8 +150,9 @@ class PlayGameViewModel @Inject constructor(
                     listOf(2, 2)
                 )
             )
-        if ((list[0][2] == list[1][1] && list[1][1] == list[2][0]) && (list[0][2].isNotBlank()
-                    && list[1][1].isNotBlank() && list[2][0].isNotBlank())
+        //right diagonal
+        if ((list[0][2].value == list[1][1].value && list[1][1].value == list[2][0].value) && (list[0][2].value.isNotBlank()
+                    && list[1][1].value.isNotBlank() && list[2][0].value.isNotBlank())
         )
             diagonal.addAll(
                 listOf(
@@ -138,6 +162,11 @@ class PlayGameViewModel @Inject constructor(
                 )
             )
 
-        return winningRows + winningColumns + diagonal
+        return (winningRows + winningColumns + diagonal).map { (first, second) ->
+            Pair(
+                first,
+                second
+            )
+        }
     }
 }

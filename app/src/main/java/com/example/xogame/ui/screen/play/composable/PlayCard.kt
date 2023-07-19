@@ -12,19 +12,21 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.xogame.R
+import com.example.xogame.ui.screen.play.PlayUiState
 import com.example.xogame.ui.theme.XOGameCustomColors
 
 @Composable
 fun PlayCard(
     modifier: Modifier = Modifier,
-    value: String ,
+    value: PlayUiState.XOCard,
     onClick: () -> Unit,
-    playerTurn:String?=null,
-    isActive:Boolean,
-    onClickCard:() -> Unit
+    playerTurn: String? = null,
+    isActive: Boolean,
+    onClickCard: () -> Unit
 ) {
     Box(
         modifier = modifier
@@ -32,8 +34,9 @@ fun PlayCard(
             .height(106.dp)
             .background(
                 shape = RoundedCornerShape(12.dp),
-                color = XOGameCustomColors.current.gameCard
-            ).clickable(enabled = value.isBlank() && isActive)
+                color = if (value.color == Color.Transparent) XOGameCustomColors.current.gameCard else value.color
+            )
+            .clickable(enabled = value.value.isBlank() && isActive)
             {
                 onClick()
                 onClickCard()
@@ -41,13 +44,14 @@ fun PlayCard(
             }
     ) {
         (
-                when (value) {
-            "X" -> painterResource(id = R.drawable.ic_x_palyer)
-            "O" -> painterResource(
-                id = R.drawable.ic_o_player
-            )
-            else -> null
-        })?.let {
+                when (value.value) {
+                    "X" -> painterResource(id = R.drawable.ic_x_palyer)
+                    "O" -> painterResource(
+                        id = R.drawable.ic_o_player
+                    )
+
+                    else -> null
+                })?.let {
             Image(
                 painter = it,
                 contentDescription = null,
