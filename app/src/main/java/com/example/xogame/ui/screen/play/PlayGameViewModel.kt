@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xogame.data.Game
 import com.example.xogame.data.remote.XOSocketService
+import com.example.xogame.data.util.FriendJoinedTheGameException
+import com.example.xogame.data.util.NotYourTurnException
+import com.example.xogame.data.util.PositionIsNotEmptyException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,9 +27,10 @@ class PlayGameViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     init {
-        try {
-            viewModelScope.launch {
-                xoSocketService.initSession("Asiasama")
+
+        viewModelScope.launch {
+            xoSocketService.initSession("Asiasama")
+            try {
                 xoSocketService.observeGame(onFriendNotify = {}).collectLatest { game ->
 
                     if (game != null) {
@@ -40,22 +44,29 @@ class PlayGameViewModel @Inject constructor(
                         Log.e("TAG", "init: ${_state.value.board}")
                         Log.e("TAG", "init: ${game.row} ${game.column}")
                     }
-
                 }
+            } catch (e: FriendJoinedTheGameException) {
+                Log.e("TAG", "FriendJoinedTheGameException: ${e.message}")
+            } catch (e: PositionIsNotEmptyException) {
+                Log.e("TAG", "PositionIsNotEmptyException: ${e.message}")
+            } catch (e: NotYourTurnException) {
+                Log.e("TAG", "NotYourTurnException: ${e.message}")
             }
-        } catch (e: Exception) {
-            Log.e("TAG", "init error: ${e.message}")
         }
         observeWinning()
+
     }
+
+
 
     private fun observeWinning() {
         viewModelScope.launch {
             _state.collectLatest {
                 if (winningPositions(_state.value.board).isNotEmpty()) {
-                    val newState = winningPositions(_state.value.board).fold(state.value) { accState, (row, col) ->
-                        updateColor(accState, row, col)
-                    }
+                    val newState =
+                        winningPositions(_state.value.board).fold(state.value) { accState, (row, col) ->
+                            updateColor(accState, row, col)
+                        }
                     _state.update { it.copy(board = newState.board) }
                 }
                 Log.i("gg", "winning pos:${winningPositions(_state.value.board)} ")
@@ -63,6 +74,7 @@ class PlayGameViewModel @Inject constructor(
             }
         }
     }
+
     private fun updateColor(state: PlayUiState, row: Int, col: Int): PlayUiState {
         val updatedBoard = state.board.mapIndexed { rowIndex, rowList ->
             rowList.mapIndexed { colIndex, card ->

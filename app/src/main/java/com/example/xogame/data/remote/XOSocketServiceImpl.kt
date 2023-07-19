@@ -6,6 +6,9 @@ import com.example.xogame.data.GameDto
 import com.example.xogame.data.GameTurn
 import com.example.xogame.data.asGame
 import com.example.xogame.data.toGame
+import com.example.xogame.data.util.FriendJoinedTheGameException
+import com.example.xogame.data.util.NotYourTurnException
+import com.example.xogame.data.util.PositionIsNotEmptyException
 import com.example.xogame.util.ResponseResult
 import com.google.gson.Gson
 import io.ktor.client.HttpClient
@@ -87,11 +90,15 @@ class XOSocketServiceImpl @Inject constructor(
                 val value:GameTurn? = when (val response = (it as? Frame.Text)?.readText() ?: "") {
                     "Your Friend Joined the game" -> {
                         onFriendNotify()
-                        null
+                        throw FriendJoinedTheGameException()
                     }
                     "Not your turn" -> {
                         Log.e("gg", "Not your turn: $response")
-                        null
+                        throw NotYourTurnException()
+                    }
+                    "Position is already taken. Try again." -> {
+                        Log.e("gg", "Position is already taken. Try again.: $response")
+                        throw PositionIsNotEmptyException()
                     }
                     else -> {
                         try {
@@ -132,6 +139,6 @@ class XOSocketServiceImpl @Inject constructor(
     }
 
     companion object {
-        const val BASE_URL = "ws://xo-moon-cake-hc9jd.ondigitalocean.app/xo-game"
+        const val BASE_URL = "ws://192.168.0.117:8080/xo-game"
     }
 }
