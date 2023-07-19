@@ -34,6 +34,7 @@ class PlayGameViewModel @Inject constructor(
         if (_state.value.currentPlayer == "O") disablePosition()
         observeGame()
         observeWinning()
+        _state.update { it.copy(player2Name = args.secondPlayerName) }
     }
 
     private fun updateCharacter() {
@@ -59,8 +60,6 @@ class PlayGameViewModel @Inject constructor(
                     }
 
                 }
-            } catch (e: FriendJoinedTheGameException) {
-                Log.e("TAG", "FriendJoinedTheGameException: ${e.message}")
             } catch (e: PositionIsNotEmptyException) {
                 Log.e("TAG", "PositionIsNotEmptyException: ${e.message}")
             } catch (e: NotYourTurnException) {

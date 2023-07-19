@@ -43,7 +43,7 @@ fun StartGameScreen(viewModel: StartGameViewModel = hiltViewModel(), navControll
             viewModel.closeSession()
         },
         onFriendNotify = {
-            navController.navigateToPlay("X")
+            navController.navigateToPlay("X", state.player2Name)
             viewModel.disableFriend()
         },
         state

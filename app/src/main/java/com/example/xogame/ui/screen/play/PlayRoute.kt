@@ -10,22 +10,25 @@ import androidx.navigation.navArgument
 const val ROUTE = "board game"
 
 
-fun NavController.navigateToPlay(character: String) {
-    navigate("$ROUTE/$character"){
+fun NavController.navigateToPlay(character: String,secondPlayerName : String) {
+    navigate("$ROUTE/$character/$secondPlayerName"){
         this.popUpToRoute
     }
 }
 
 fun NavGraphBuilder.playRoute(navController: NavController) {
-    composable(route = "$ROUTE/{${PlayArgs.CHARACTER_ARG}}", arguments = listOf(
-        navArgument(PlayArgs.CHARACTER_ARG) { NavType.StringType }
+    composable(route = "$ROUTE/{${PlayArgs.CHARACTER_ARG}}/{${PlayArgs.SECOND_PLAYER_NAME}}", arguments = listOf(
+        navArgument(PlayArgs.CHARACTER_ARG) { NavType.StringType },
+        navArgument(PlayArgs.SECOND_PLAYER_NAME) { NavType.StringType },
     )) { PlayGameScreen() }
 }
 
 class PlayArgs(savedStateHandle: SavedStateHandle) {
     val character: String = checkNotNull(savedStateHandle[CHARACTER_ARG])
+    val secondPlayerName: String = checkNotNull(savedStateHandle[SECOND_PLAYER_NAME])
 
     companion object {
         const val CHARACTER_ARG = "character"
+        const val SECOND_PLAYER_NAME = "secondPlayerName"
     }
 }

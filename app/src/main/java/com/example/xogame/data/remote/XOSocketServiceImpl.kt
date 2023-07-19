@@ -91,13 +91,14 @@ class XOSocketServiceImpl @Inject constructor(
             socket?.incoming?.receiveAsFlow()?.map {
                 val response = (it as? Frame.Text)?.readText() ?: ""
                 val value:GameTurn? = when {
-                    response.contains("Your Friend Joined the game")  -> {
+                    response.contains("Your Friend Joined the game #")  -> {
                         onFriendNotify()
-                        throw FriendJoinedTheGameException()
+                        val player2Name = response.substringAfter("#")
+                        throw FriendJoinedTheGameException(player2Name)
                     }
                     response.contains( "Not your turn")   -> {
                         Log.e("gg", "Not your turn: $response")
-                        throw NotYourTurnException()
+                        throw NotYourTurnException(false)
                     }
                     response.contains( "Position is already taken. Try again.") -> {
                         Log.e("gg", "Position is already taken. Try again.: $response")
@@ -143,6 +144,6 @@ class XOSocketServiceImpl @Inject constructor(
     }
 
     companion object {
-        const val BASE_URL = "ws://xo-moon-cake-hc9jd.ondigitalocean.app/xo-game"
+        const val BASE_URL = "ws://10.23.0.173:8087/xo-game"
     }
 }

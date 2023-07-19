@@ -95,7 +95,7 @@ fun PlayGameContent(
                             color = XOGameCustomColors.current.onBackground87
                         )
                         PlayerLabel(
-                            playerName = "Asia",
+                            playerName = state.player2Name,
                             playerSymbol = R.drawable.ic_o_player,
                             colorName = XOGameCustomColors.current.primaryPink,
                         )

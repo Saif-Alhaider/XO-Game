@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xogame.data.remote.XOSocketService
+import com.example.xogame.data.util.FriendJoinedTheGameException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,10 +41,16 @@ class StartGameViewModel @Inject constructor(
     }
 
     private suspend fun notifyFriendJoin() {
-         job = viewModelScope.launch {
-            xoSocketService.observeGame(onFriendNotify = {
-                _state.update { it.copy(isFriendActive = true) }
-            }).collectLatest {}
+        job = viewModelScope.launch {
+            try {
+                xoSocketService.observeGame(onFriendNotify = {
+                    _state.update { it.copy(isFriendActive = true) }
+                }).collectLatest {}
+            } catch (e: FriendJoinedTheGameException) {
+                _state.update { it.copy(player2Name = e.player2Name) }
+                Log.d("TAG", "notifyFriendJoin: ${e.player2Name}")
+                Log.d("TAG", "notifyFriendJoin: ${e.message}")
+            }
         }
     }
 
@@ -57,7 +64,8 @@ class StartGameViewModel @Inject constructor(
             xoSocketService.closeSession()
         }
     }
-    fun disableFriend(){
+
+    fun disableFriend() {
         job?.cancel()
         _state.update { it.copy(isFriendActive = false) }
     }
