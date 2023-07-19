@@ -80,6 +80,7 @@ fun StartGameContent(
                 Text(
                     text = "Copy the following code and send it to your friend",
                     textAlign = TextAlign.Center,
+                    color = XOGameCustomColors.current.onBackground87,
                     modifier = Modifier.padding(top = 40.dp)
                 )
                 OutlinedTextFieldPrimary(trailingIcon = {

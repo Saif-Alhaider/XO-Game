@@ -34,7 +34,7 @@ private val LightCustomColorPlate = CustomColorsPalette(
     primaryBlue60 = PrimaryBlue60,
     primaryPink = PrimaryPink,
     primaryPink60 = PrimaryPink60,
-    background = Background,
+    background = BackgroundLight,
     onBackground87 = OnBackgroundLight87,
     onBackground60 = OnBackgroundLight60,
     onBackground36 = OnBackgroundLight36,
@@ -47,10 +47,10 @@ private val DarkCustomColorPlate = CustomColorsPalette(
     primaryBlue60 = PrimaryBlue60,
     primaryPink = PrimaryPink,
     primaryPink60 = PrimaryPink60,
-    background = Background,
-    onBackground87 = OnBackgroundLight87,
-    onBackground60 = OnBackgroundLight60,
-    onBackground36 = OnBackgroundLight36,
+    background = BackgroundDark,
+    onBackground87 = OnBackgroundDark87,
+    onBackground60 = OnBackgroundDark60,
+    onBackground36 = OnBackgroundDark36,
     onButton = OnButton,
     card = CardLight,
     gameCard = GameCardLight
@@ -79,8 +79,8 @@ fun XOGameTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+//            window.statusBarColor = colorScheme.primary.toArgb()
+//            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
     val customColorsPalette = if (darkTheme) DarkCustomColorPlate else LightCustomColorPlate

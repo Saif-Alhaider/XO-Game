@@ -25,6 +25,7 @@ import com.example.xogame.ui.composables.OutlinedTextFieldPrimary
 import com.example.xogame.ui.composables.XoScaffold
 import com.example.xogame.ui.screen.home.composables.PrimaryButton
 import com.example.xogame.ui.screen.play.navigateToPlay
+import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 import com.example.xogame.util.createToast
 
@@ -79,6 +80,7 @@ fun JoinGameContent(
                 Text(
                     text = "Please enter game ID to join",
                     textAlign = TextAlign.Center,
+                    color = XOGameCustomColors.current.onBackground87,
                     modifier = Modifier.padding(top = 40.dp)
                 )
                 OutlinedTextFieldPrimary(
