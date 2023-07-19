@@ -86,7 +86,7 @@ fun JoinGameContent(
                         .padding(top = 16.dp)
                         .fillMaxWidth(),
                     value = state.roomId,
-                    enabled = true,
+                    readOnly = true,
                     onValueChanged = updateRoomId,
                     placeHolder = "Enter Room Id"
                 )

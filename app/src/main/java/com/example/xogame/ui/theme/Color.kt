@@ -12,6 +12,7 @@ val Background = Color(0xFFFFFFFF)
 val OnBackgroundLight87 = Color(0xDE000000)
 val OnBackgroundLight60 = Color(0x99000000)
 val OnBackgroundLight36 = Color(0x99000000)
+val OnButton = Color(0xDEFFFFFF)
 val CardLight = Color(0x5CFFFFFF)
 val GameCardLight = Color(0xFFFAFAFA)
 
@@ -24,6 +25,7 @@ data class CustomColorsPalette(
     val onBackground87: Color = Color.Unspecified,
     val onBackground60: Color = Color.Unspecified,
     val onBackground36: Color = Color.Unspecified,
+    val onButton:Color = Color.Unspecified,
     val card: Color = Color.Unspecified,
     val gameCard: Color = Color.Unspecified,
     val background: Color = Color.Unspecified,

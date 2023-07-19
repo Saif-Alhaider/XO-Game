@@ -4,9 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -104,7 +102,10 @@ fun HomeContent(
                                 .show()
                         }
                     }
-                    PrimaryButton(text = stringResource(R.string.join_game), modifier = Modifier.padding(top = 12.dp)) {
+                    PrimaryButton(
+                        text = stringResource(R.string.join_game),
+                        modifier = Modifier.padding(top = 12.dp)
+                    ) {
                         if (state.username.isNotBlank()) {
                             savePlayerName(state.username)
                             onClickJoin()
