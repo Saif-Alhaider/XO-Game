@@ -89,7 +89,7 @@ fun StartGameContent(
                         modifier = Modifier
                             .clickable { clipboardManager.setText(AnnotatedString((state.roomId))) }
                     )
-                }, modifier = Modifier.padding(top = 16.dp), value = state.roomId, enabled = false)
+                }, modifier = Modifier.padding(top = 16.dp), value = state.roomId, readOnly = false)
                 Text(
                     text = "When your friend joins the game, you'll be ready to have fun playing together",
                     textAlign = TextAlign.Center,
