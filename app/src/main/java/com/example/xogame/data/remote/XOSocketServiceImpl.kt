@@ -3,7 +3,8 @@ package com.example.xogame.data.remote
 import android.util.Log
 import com.example.xogame.data.Game
 import com.example.xogame.data.GameDto
-import com.example.xogame.data.toGame
+import com.example.xogame.data.GameTurn
+import com.example.xogame.data.asGame
 import com.example.xogame.util.ResponseResult
 import com.google.gson.Gson
 import io.ktor.client.HttpClient
@@ -13,6 +14,7 @@ import io.ktor.http.cio.websocket.Frame
 import io.ktor.http.cio.websocket.WebSocketSession
 import io.ktor.http.cio.websocket.close
 import io.ktor.http.cio.websocket.readText
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -83,7 +85,7 @@ class XOSocketServiceImpl @Inject constructor(
         Log.i("gg", "observeGame: working")
         return try {
             socket?.incoming?.receiveAsFlow()?.map {
-                val value:GameTurn? = when (val response = (it as? Frame.Text)?.readText() ?: "") {
+                val value: GameTurn? = when (val response = (it as? Frame.Text)?.readText() ?: "") {
                     "Your Friend Joined the game" -> {
                         onFriendNotify()
                         null
