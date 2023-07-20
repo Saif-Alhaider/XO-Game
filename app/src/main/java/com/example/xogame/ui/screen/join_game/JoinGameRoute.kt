@@ -13,11 +13,11 @@ fun NavController.navigateToJoinGame(username: String) {
     navigate("$ROUTE/$username")
 }
 
-fun NavGraphBuilder.joinGameRoute(navController: NavController) {
+fun NavGraphBuilder.joinGameRoute() {
     composable(route = "$ROUTE/{${JoinGameArgs.USERNAME_ARG}}",
         arguments = listOf(
             navArgument(JoinGameArgs.USERNAME_ARG) { NavType.StringType }
-        )) { JoinGameScreen(navController = navController) }
+        )) { JoinGameScreen() }
 }
 
 class JoinGameArgs(savedStateHandle: SavedStateHandle) {
