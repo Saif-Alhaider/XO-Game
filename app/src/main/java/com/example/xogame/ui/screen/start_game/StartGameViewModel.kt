@@ -28,6 +28,7 @@ class StartGameViewModel @Inject constructor(
     var job: Job? = null
 
     init {
+        _state.update{it.copy(firstPlayerName = xoRepository.getPlayerName() ?: "")}
         createGameSession()
     }
 

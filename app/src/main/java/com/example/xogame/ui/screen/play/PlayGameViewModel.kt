@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xogame.data.Game
 import com.example.xogame.data.XORepository
-import com.example.xogame.data.util.JoinedTheGameWithException
 import com.example.xogame.data.util.NotYourTurnException
 import com.example.xogame.data.util.PositionIsNotEmptyException
 import com.example.xogame.data.util.WinnerException
@@ -35,10 +34,12 @@ class PlayGameViewModel @Inject constructor(
         if (_state.value.currentPlayer == "O") disablePosition()
         observeGame()
         observeWinning()
-        _state.update { it.copy(
-            secondPlayerName = args.secondPlayerName ,
-            firstPlayerName = if(it.currentPlayer == "X")  xoRepository.getPlayerName()?:"player" else _state.value.firstPlayerName ,
-        )
+        _state.update {
+            it.copy(
+                secondPlayerName = args.secondPlayerName,
+                firstPlayerName = if (it.currentPlayer == "X") xoRepository.getPlayerName()
+                    ?: "player" else _state.value.firstPlayerName,
+            )
         }
     }
 
@@ -47,11 +48,12 @@ class PlayGameViewModel @Inject constructor(
     }
 
     private fun observeGame() {
-
         viewModelScope.launch {
             try {
-                xoRepository.observeGame(onFriendNotify = {}).collectLatest { game ->
-                    Log.i("gg", "observeGame: $game")
+                xoRepository.observeGame(onFriendNotify = { name ->
+                    _state.update { it.copy(firstPlayerName = name) }
+                }).collectLatest { game ->
+                    Log.i("observe", "observeGame: $game")
                     if (game != null) {
                         val list = _state.value.board.toMutableList()
                         val newRow = list[game.row].toMutableList()
@@ -69,15 +71,10 @@ class PlayGameViewModel @Inject constructor(
                 Log.e("TAG", "PositionIsNotEmptyException: ${e.message}")
             } catch (e: NotYourTurnException) {
                 Log.e("TAG", "NotYourTurnException: ${e.message}")
-            } catch (e: JoinedTheGameWithException) {
-                _state.update { it.copy(firstPlayerName = e.playerName) }
-                Log.e("TAG", "NotYourTurnException: ${e.message}")
-            }
-            catch (e: WinnerException) {
-                if(e.winnerName == "X"){
+            } catch (e: WinnerException) {
+                if (e.winnerName == "X") {
                     _state.update { it.copy(winner = _state.value.firstPlayerName) }
-                }
-                else{
+                } else {
                     _state.update { it.copy(winner = _state.value.secondPlayerName) }
                 }
 //                _state.update { it.copy(winner = e.winnerName) }

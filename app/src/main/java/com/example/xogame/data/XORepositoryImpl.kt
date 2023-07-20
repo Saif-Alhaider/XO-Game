@@ -25,7 +25,7 @@ class XORepositoryImpl(
         return xoSocketService.joinSession(username, roomId)
     }
 
-    override suspend fun observeGame(onFriendNotify: () -> Unit): Flow<GameTurn?> {
+    override suspend fun observeGame(onFriendNotify: (String) -> Unit): Flow<GameTurn?> {
         return xoSocketService.observeGame(onFriendNotify)
     }
 

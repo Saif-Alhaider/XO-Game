@@ -10,7 +10,7 @@ interface XORepository {
 
     suspend fun joinGame(username: String, roomId: String, ): ResponseResult<Unit>
 
-    suspend fun observeGame(onFriendNotify: () -> Unit = {}): Flow<GameTurn?>
+    suspend fun observeGame(onFriendNotify: (String) -> Unit = {}): Flow<GameTurn?>
 
     suspend fun sendXorO(game:Game)
 

@@ -85,17 +85,18 @@ class XOSocketServiceImpl @Inject constructor(
     }
 
     @OptIn(ExperimentalSerializationApi::class)
-    override suspend fun observeGame(onFriendNotify: () -> Unit): Flow<GameTurn?> {
+    override suspend fun observeGame(onFriendNotify: (String) -> Unit): Flow<GameTurn?> {
         Log.i("gg", "observeGame: working")
         return try {
             socket?.incoming?.receiveAsFlow()?.map {
                 val response = (it as? Frame.Text)?.readText() ?: ""
                 val value: GameTurn? = when {
                     response.contains("players :") -> {
-                        onFriendNotify()
                         val secondPlayerName = response.substringAfter("#")
                         Log.e("gg", "$secondPlayerName")
-                        throw JoinedTheGameWithException(secondPlayerName)
+                        onFriendNotify(secondPlayerName)
+//                        throw JoinedTheGameWithException(secondPlayerName)
+                        null
                     }
 
                     response.contains("Not your turn") -> {
@@ -157,6 +158,6 @@ class XOSocketServiceImpl @Inject constructor(
     }
 
     companion object {
-        const val BASE_URL = "ws://192.168.0.103:8080/xo-game"
+        const val BASE_URL = "ws://xo-moon-cake-hc9jd.ondigitalocean.app/xo-game"
     }
 }
