@@ -28,7 +28,7 @@ import com.example.xogame.R
 import com.example.xogame.ui.theme.XOGameCustomColors
 
 @Composable
-fun GamePresentation() {
+fun GamePresentation(firstName : String, secondName : String) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.vs))
     val progress by animateLottieCompositionAsState(composition)
 
@@ -51,12 +51,12 @@ fun GamePresentation() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Text(text = "Saif", fontSize = 40.sp, color = Color.White)
+                Text(text = firstName, fontSize = 28.sp, color = Color.White)
                 LottieAnimation(
                     composition = composition,
                     modifier = Modifier.size(150.dp),
                 )
-                Text(text = "Asia", fontSize = 40.sp, color = Color.White)
+                Text(text = secondName, fontSize = 28.sp, color = Color.White)
             }
         }
     }
@@ -66,5 +66,5 @@ fun GamePresentation() {
 @Preview(showSystemUi = true)
 @Composable
 fun GamePresentationPreview() {
-    GamePresentation()
+    GamePresentation("ali","ahmed")
 }

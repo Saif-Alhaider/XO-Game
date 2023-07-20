@@ -139,7 +139,7 @@ fun PlayGameContent(
                     }
                 }
             }
-            GamePresentation()
+            GamePresentation(state.firstPlayerName,state.secondPlayerName)
         }
     }
 }

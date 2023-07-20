@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -35,11 +36,12 @@ import com.example.xogame.ui.screen.play.navigateToPlay
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 import com.example.xogame.ui.theme.XONavigationProvider
+import com.example.xogame.util.createToast
 
 @Composable
 fun StartGameScreen(viewModel: StartGameViewModel = hiltViewModel()) {
     val state = viewModel.state.collectAsState().value
-    val navController  = XONavigationProvider.current
+    val navController = XONavigationProvider.current
 
     StartGameContent(
         onNavigateBack = {
@@ -68,6 +70,7 @@ fun StartGameContent(
     BackHandler {
         onNavigateBack()
     }
+    val context = LocalContext.current
     XoScaffold {
         Box(Modifier.fillMaxSize()) {
             Column(
@@ -93,7 +96,10 @@ fun StartGameContent(
                         contentDescription = "copy",
                         colorFilter = ColorFilter.tint(XOGameCustomColors.current.onBackground60),
                         modifier = Modifier
-                            .clickable { clipboardManager.setText(AnnotatedString((state.roomId))) }
+                            .clickable {
+                                clipboardManager.setText(AnnotatedString((state.roomId)))
+                                createToast(context, "Copy is successfully")
+                            }
                     )
                 }, modifier = Modifier.padding(top = 16.dp), value = state.roomId, readOnly = false)
                 Text(
