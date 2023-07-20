@@ -1,6 +1,5 @@
 package com.example.xogame.ui.screen.play
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,11 +22,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.xogame.R
+import com.example.xogame.ui.composables.GamePresentation
 import com.example.xogame.ui.composables.XoScaffold
 import com.example.xogame.ui.screen.AppDestination
 import com.example.xogame.ui.screen.play.composable.GameResultDialog
 import com.example.xogame.ui.screen.play.composable.PlayCard
 import com.example.xogame.ui.screen.play.composable.PlayerLabel
+import com.example.xogame.ui.screen.start_game.navigateToStartGame
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 import com.example.xogame.ui.theme.XONavigationProvider
@@ -43,7 +44,7 @@ fun PlayGameScreen(
         state = state,
         onClickSquare = viewModel::onClickSquare,
         onClickCard = viewModel::disablePosition,
-        onBackToPlayAgain = { navController.navigateUp() },
+        onBackToPlayAgain = { navController.navigateToStartGame(state.firstPlayerName)},
         onBackToMenu = { navController.popBackStack(AppDestination.Home.route, false) }
     )
 }
@@ -60,7 +61,6 @@ fun PlayGameContent(
     XoScaffold {
 
         Box {
-
             GameResultDialog(
                 showDialog = state.winner.isNotEmpty(),
                 winner = state.winner,
@@ -68,7 +68,6 @@ fun PlayGameContent(
                 onBackToPlayAgain = onBackToPlayAgain,
                 onBackToMenu = onBackToMenu
             )
-
             Column(
                 modifier = Modifier.fillMaxHeight(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -140,6 +139,7 @@ fun PlayGameContent(
                     }
                 }
             }
+            GamePresentation()
         }
     }
 }
