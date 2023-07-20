@@ -24,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.xogame.R
 import com.example.xogame.ui.composables.XoScaffold
+import com.example.xogame.ui.screen.AppDestination
 import com.example.xogame.ui.screen.home.navigateToHome
 import com.example.xogame.ui.screen.play.composable.GameResultDialog
 import com.example.xogame.ui.screen.play.composable.PlayCard
@@ -44,8 +45,8 @@ fun PlayGameScreen(
         state = state,
         onClickSquare = viewModel::onClickSquare,
         onClickCard = viewModel::disablePosition,
-        onBackToPlayAgain = { navController.navigateToStartGame(state.firstPlayerName) },
-        onBackToMenu = { navController.navigateToHome() }
+        onBackToPlayAgain = { navController.navigateUp() },
+        onBackToMenu = { navController.popBackStack(AppDestination.Home.route, false) }
     )
 }
 
@@ -57,20 +58,18 @@ fun PlayGameContent(
     onBackToPlayAgain: () -> Unit,
     onBackToMenu: () -> Unit,
 
-) {
+    ) {
     XoScaffold {
 
         Box {
 
-            if (state.winner.isNotEmpty()) {
-                GameResultDialog(
-                    showDialog = true,
-                    winner = state.winner,
-                    modifier = Modifier.zIndex(2f),
-                    onBackToPlayAgain = onBackToPlayAgain,
-                    onBackToMenu = onBackToMenu
-                )
-            }
+            GameResultDialog(
+                showDialog = state.winner.isNotEmpty(),
+                winner = state.winner,
+                modifier = Modifier.zIndex(2f),
+                onBackToPlayAgain = onBackToPlayAgain,
+                onBackToMenu = onBackToMenu
+            )
 
             Column(
                 modifier = Modifier.fillMaxHeight(),

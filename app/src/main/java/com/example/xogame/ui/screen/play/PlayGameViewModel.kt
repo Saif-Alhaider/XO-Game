@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -66,6 +67,7 @@ class PlayGameViewModel @Inject constructor(
 
                 }
             } catch (e: WinnerException) {
+                _state.update { it.copy(isActive = false) }
                 when (e.winnerName) {
                     "X" -> {
                         _state.update { it.copy(winner = _state.value.firstPlayerName) }

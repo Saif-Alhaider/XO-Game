@@ -41,8 +41,8 @@ fun GameResultDialog(
     Box(modifier = modifier) {
         AnimatedVisibility(
             visible = showDialog,
-            enter = fadeIn(animationSpec = tween(100)),
-            exit = fadeOut(animationSpec = tween(100))
+            enter = fadeIn(animationSpec = tween(100, delayMillis = 500)),
+            exit = fadeOut(animationSpec = tween(100, delayMillis = 500))
         ) {
             Box(
                 modifier = Modifier
