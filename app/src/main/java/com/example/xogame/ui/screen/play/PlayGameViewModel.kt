@@ -71,14 +71,22 @@ class PlayGameViewModel @Inject constructor(
                 Log.e("TAG", "PositionIsNotEmptyException: ${e.message}")
             } catch (e: NotYourTurnException) {
                 Log.e("TAG", "NotYourTurnException: ${e.message}")
+            } catch (e: JoinedTheGameWithException) {
+                _state.update { it.copy(firstPlayerName = e.playerName) }
+                Log.e("TAG", "NotYourTurnException: ${e.message}")
             } catch (e: WinnerException) {
-                if (e.winnerName == "X") {
-                    _state.update { it.copy(winner = _state.value.firstPlayerName) }
-                } else {
-                    _state.update { it.copy(winner = _state.value.secondPlayerName) }
+                when (e.winnerName) {
+                    "X" -> {
+                        _state.update { it.copy(winner = _state.value.firstPlayerName) }
+                    }
+                    "O" -> {
+                        _state.update { it.copy(winner = _state.value.secondPlayerName) }
+                    }
+                    else -> {
+                        _state.update { it.copy(winner = "Draw") }
+
+                    }
                 }
-//                _state.update { it.copy(winner = e.winnerName) }
-                Log.e("TAG", "WinnerException: ${e.message}")
             }
         }
     }

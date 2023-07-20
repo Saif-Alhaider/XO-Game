@@ -112,6 +112,9 @@ class XOSocketServiceImpl @Inject constructor(
                     response.contains("win") -> {
                         throw WinnerException(response.substringAfter("#"))
                     }
+                    response.contains("draw") -> {
+                        throw WinnerException("draw")
+                    }
 
                     else -> {
                         try {
