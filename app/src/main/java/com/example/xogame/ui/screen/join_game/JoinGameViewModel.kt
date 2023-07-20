@@ -16,7 +16,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class JoinGameViewModel @Inject constructor(
-    private val xoSocketService: XOSocketService,
     private val xoRepository: XORepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -35,20 +34,18 @@ class JoinGameViewModel @Inject constructor(
 
     fun onClickJoin() {
         viewModelScope.launch {
-            val response =
-                xoSocketService.joinSession(username = args.username, roomId = _state.value.roomId)
-            when (response) {
+            when (xoRepository.joinGame(username = args.username, roomId = _state.value.roomId)) {
                 is ResponseResult.Success -> _state.update { it.copy(isJoined = true) }
                 is ResponseResult.Error -> _state.update { it.copy(isJoined = false) }
             }
         }
     }
-    fun dissableIsJoin(){
+    fun disableIsJoin(){
         _state.update{it.copy(isJoined = false)}
     }
     fun closeSession(){
         viewModelScope.launch {
-            xoSocketService.closeSession()
+            xoRepository.endGame()
         }
     }
 }

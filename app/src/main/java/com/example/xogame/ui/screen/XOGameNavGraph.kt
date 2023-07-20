@@ -16,6 +16,6 @@ fun XOGameNavGraph(navHostController: NavHostController) {
         homeRoute(navHostController)
         startGameRoute(navHostController)
         joinGameRoute(navHostController)
-        playRoute(navHostController)
+        playRoute()
     }
 }

@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xogame.data.Game
 import com.example.xogame.data.XORepository
-import com.example.xogame.data.remote.XOSocketService
 import com.example.xogame.data.util.JoinedTheGameWithException
 import com.example.xogame.data.util.NotYourTurnException
 import com.example.xogame.data.util.PositionIsNotEmptyException
@@ -24,7 +23,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PlayGameViewModel @Inject constructor(
-    private val xoSocketService: XOSocketService,
     private val xoRepository: XORepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -52,7 +50,7 @@ class PlayGameViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                xoSocketService.observeGame(onFriendNotify = {}).collectLatest { game ->
+                xoRepository.observeGame(onFriendNotify = {}).collectLatest { game ->
                     Log.i("gg", "observeGame: $game")
                     if (game != null) {
                         val list = _state.value.board.toMutableList()
@@ -138,18 +136,12 @@ class PlayGameViewModel @Inject constructor(
                 _state.update {
                     it.copy(board = list)
                 }
-                xoSocketService.sendXO(Game(row, column))
+                xoRepository.sendXorO(Game(row, column))
             }
         } catch (e: Exception) {
             Log.e("TAG", "message error: ${e.message}")
         }
 
-    }
-
-    fun closeSession() {
-        viewModelScope.launch {
-            xoSocketService.closeSession()
-        }
     }
 
     private fun winningPositions(list: List<List<PlayUiState.XOCard>>): List<Pair<Int, Int>> {

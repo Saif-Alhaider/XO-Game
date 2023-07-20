@@ -31,7 +31,7 @@ import javax.inject.Inject
 
 class XOSocketServiceImpl @Inject constructor(
     private val client: HttpClient,
-    private val gson: Gson
+    private val gson: Gson,
 ) :
     XOSocketService {
     private var socket: WebSocketSession? = null
@@ -90,31 +90,35 @@ class XOSocketServiceImpl @Inject constructor(
         return try {
             socket?.incoming?.receiveAsFlow()?.map {
                 val response = (it as? Frame.Text)?.readText() ?: ""
-                val value:GameTurn? = when {
-                    response.contains("players :")  -> {
+                val value: GameTurn? = when {
+                    response.contains("players :") -> {
                         onFriendNotify()
                         val secondPlayerName = response.substringAfter("#")
                         Log.e("gg", "$secondPlayerName")
                         throw JoinedTheGameWithException(secondPlayerName)
                     }
-                    response.contains( "Not your turn")   -> {
+
+                    response.contains("Not your turn") -> {
                         Log.e("gg", "Not your turn: $response")
                         throw NotYourTurnException(false)
                     }
-                    response.contains( "Position is already taken. Try again.") -> {
+
+                    response.contains("Position is already taken. Try again.") -> {
                         Log.e("gg", "Position is already taken. Try again.: $response")
                         throw PositionIsNotEmptyException()
                     }
-                    response.contains( "win") -> {
+
+                    response.contains("win") -> {
                         throw WinnerException(response.substringAfter("#"))
                     }
+
                     else -> {
                         try {
                             val gameDto = Json.decodeFromString<GameDto>(response)
                             Log.i("gg", "gameDto: $gameDto")
                             gameDto.asGame()
 
-                        }catch (e: Exception){
+                        } catch (e: Exception) {
                             Log.i("gg", "${e.message}")
                             null
                         }
@@ -144,10 +148,15 @@ class XOSocketServiceImpl @Inject constructor(
     }
 
     override suspend fun closeSession() {
-        socket?.close()
+        socket?.let {
+            if (it.isActive) {
+                it.close()
+            }
+            socket = null
+        }
     }
 
     companion object {
-        const val BASE_URL = "ws://10.23.0.173:8087/xo-game"
+        const val BASE_URL = "ws://192.168.0.103:8080/xo-game"
     }
 }

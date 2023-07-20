@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,7 +30,10 @@ import com.example.xogame.ui.theme.XOGameTheme
 import com.example.xogame.util.createToast
 
 @Composable
-fun JoinGameScreen(viewModel: JoinGameViewModel = hiltViewModel(), navController: NavController) {
+fun JoinGameScreen(
+    viewModel: JoinGameViewModel = hiltViewModel(),
+    navController: NavController
+) {
     val state = viewModel.state.collectAsState().value
     JoinGameContent(
         updateRoomId = viewModel::updateRoomId,
@@ -40,7 +44,7 @@ fun JoinGameScreen(viewModel: JoinGameViewModel = hiltViewModel(), navController
         },
         onJoinSession = {
             navController.navigateToPlay("O", state.playerName)
-            viewModel.dissableIsJoin()
+            viewModel.disableIsJoin()
         },
         state = state
     )
@@ -77,7 +81,7 @@ fun JoinGameContent(
                     contentDescription = "two kids playing chess"
                 )
                 Text(
-                    text = "Please enter game ID to join",
+                    text = stringResource(R.string.please_enter_game_id_to_join),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(top = 40.dp)
                 )
@@ -88,7 +92,7 @@ fun JoinGameContent(
                     value = state.roomId,
                     enabled = true,
                     onValueChanged = updateRoomId,
-                    placeHolder = "Enter Room Id"
+                    placeHolder = stringResource(R.string.enter_room_id)
                 )
             }
             PrimaryButton(
@@ -103,7 +107,7 @@ fun JoinGameContent(
                         else -> onClickJoin()
                     }
                 },
-                text = "Join Game",
+                text = stringResource(id = R.string.join_game),
                 modifier = Modifier
                     .padding(bottom = 40.dp)
                     .align(Alignment.BottomCenter)

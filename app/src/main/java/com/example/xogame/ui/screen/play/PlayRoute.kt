@@ -15,7 +15,7 @@ fun NavController.navigateToPlay(character: String,secondPlayerName : String) {
     navigate("$ROUTE/$character/$secondPlayerName")
 }
 
-fun NavGraphBuilder.playRoute(navController: NavController) {
+fun NavGraphBuilder.playRoute() {
     composable(route = "$ROUTE/{${PlayArgs.CHARACTER_ARG}}/{${PlayArgs.SECOND_PLAYER_NAME}}", arguments = listOf(
         navArgument(PlayArgs.CHARACTER_ARG) { NavType.StringType },
         navArgument(PlayArgs.SECOND_PLAYER_NAME) { NavType.StringType },

@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xogame.data.XORepository
-import com.example.xogame.data.remote.XOSocketService
 import com.example.xogame.data.util.JoinedTheGameWithException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -18,12 +17,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StartGameViewModel @Inject constructor(
-    private val xoSocketService: XOSocketService,
     private val xoRepository: XORepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
     private val _state = MutableStateFlow(StartGameUiState())
     val state = _state.asStateFlow()
+
     private val args = StartGameArgs(savedStateHandle)
     var job: Job? = null
 
@@ -33,7 +33,7 @@ class StartGameViewModel @Inject constructor(
 
     private fun createGameSession() {
         viewModelScope.launch {
-            val roomId = xoSocketService.initSession(args.username).data?.let { it as String } ?: ""
+            val roomId = xoRepository.newGame(args.username).data?.let { it as String } ?: ""
             if (roomId.isNotBlank()) {
                 updateRoomId(roomId)
                 notifyFriendJoin()
@@ -45,7 +45,7 @@ class StartGameViewModel @Inject constructor(
     private suspend fun notifyFriendJoin() {
         job = viewModelScope.launch {
             try {
-                xoSocketService.observeGame(onFriendNotify = {
+                xoRepository.observeGame(onFriendNotify = {
                     _state.update { it.copy(isFriendActive = true) }
                 }).collectLatest {}
             } catch (e: JoinedTheGameWithException) {
@@ -62,7 +62,7 @@ class StartGameViewModel @Inject constructor(
 
     fun closeSession() {
         viewModelScope.launch {
-            xoSocketService.closeSession()
+            xoRepository.endGame()
         }
     }
 

@@ -6,13 +6,15 @@ import com.example.xogame.data.XORepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val xoRepository: XORepository) : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val xoRepository: XORepository,
+) : ViewModel() {
+
     private val _state = MutableStateFlow(HomeUiState())
     val state = _state.asStateFlow()
 
@@ -24,7 +26,7 @@ class HomeViewModel @Inject constructor(private val xoRepository: XORepository) 
         updatePlayerName()
     }
 
-    private fun updatePlayerName(){
+    private fun updatePlayerName() {
         val playerName = getPlayerName()
         playerName?.let {
             _state.update { it.copy(username = playerName) }
@@ -37,7 +39,7 @@ class HomeViewModel @Inject constructor(private val xoRepository: XORepository) 
         }
     }
 
-    fun getPlayerName(): String? {
+    private fun getPlayerName(): String? {
         return xoRepository.getPlayerName()
     }
 

@@ -10,4 +10,6 @@
     <string name="copy_the_following_code_and_send_it_to_your_friend">Copy the following code and send it to your friend</string>
     <string name="main_menu">Main Menu</string>
     <string name="play_again">Play Again</string>
+    <string name="enter_room_id">Enter Room Id</string>
+    <string name="please_enter_game_id_to_join">Please enter game ID to join</string>
 </resources>
