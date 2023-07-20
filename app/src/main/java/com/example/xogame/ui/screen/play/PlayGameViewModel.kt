@@ -37,7 +37,11 @@ class PlayGameViewModel @Inject constructor(
         if (_state.value.currentPlayer == "O") disablePosition()
         observeGame()
         observeWinning()
-        _state.update { it.copy(secondPlayerName = args.secondPlayerName, firstPlayerName = xoRepository.getPlayerName() ?: "player") }
+        _state.update { it.copy(
+            secondPlayerName = args.secondPlayerName ,
+            firstPlayerName = if(it.currentPlayer == "X")  xoRepository.getPlayerName()?:"player" else _state.value.firstPlayerName ,
+        )
+        }
     }
 
     private fun updateCharacter() {
@@ -72,8 +76,14 @@ class PlayGameViewModel @Inject constructor(
                 Log.e("TAG", "NotYourTurnException: ${e.message}")
             }
             catch (e: WinnerException) {
-                _state.update { it.copy(winner = e.winnerName) }
-                Log.e("TAG", "NotYourTurnException: ${e.message}")
+                if(e.winnerName == "X"){
+                    _state.update { it.copy(winner = _state.value.firstPlayerName) }
+                }
+                else{
+                    _state.update { it.copy(winner = _state.value.secondPlayerName) }
+                }
+//                _state.update { it.copy(winner = e.winnerName) }
+                Log.e("TAG", "WinnerException: ${e.message}")
             }
         }
     }

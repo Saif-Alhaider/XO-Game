@@ -20,7 +20,7 @@ import javax.inject.Inject
 class StartGameViewModel @Inject constructor(
     private val xoSocketService: XOSocketService,
     private val xoRepository: XORepository,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val _state = MutableStateFlow(StartGameUiState())
     val state = _state.asStateFlow()
@@ -29,7 +29,6 @@ class StartGameViewModel @Inject constructor(
 
     init {
         createGameSession()
-//        _state.update { it.copy(player2Name = ) }
     }
 
     private fun createGameSession() {
