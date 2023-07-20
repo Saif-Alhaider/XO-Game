@@ -1,5 +1,6 @@
 package com.example.xogame.ui.screen.play
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,15 +22,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.example.xogame.R
 import com.example.xogame.ui.composables.XoScaffold
 import com.example.xogame.ui.screen.AppDestination
-import com.example.xogame.ui.screen.home.navigateToHome
 import com.example.xogame.ui.screen.play.composable.GameResultDialog
 import com.example.xogame.ui.screen.play.composable.PlayCard
 import com.example.xogame.ui.screen.play.composable.PlayerLabel
-import com.example.xogame.ui.screen.start_game.navigateToStartGame
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 import com.example.xogame.ui.theme.XONavigationProvider

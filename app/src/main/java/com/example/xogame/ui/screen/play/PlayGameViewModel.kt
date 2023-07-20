@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xogame.data.Game
 import com.example.xogame.data.XORepository
+import com.example.xogame.data.util.NotYourTurnException
 import com.example.xogame.data.util.WinnerException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -82,6 +82,8 @@ class PlayGameViewModel @Inject constructor(
 
                     }
                 }
+            } catch (e: NotYourTurnException) {
+                _state.update { it.copy(isActive = false) }
             }
         }
     }
