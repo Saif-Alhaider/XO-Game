@@ -21,11 +21,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.example.xogame.R
 import com.example.xogame.ui.composables.XoScaffold
+import com.example.xogame.ui.screen.home.navigateToHome
 import com.example.xogame.ui.screen.play.composable.GameResultDialog
 import com.example.xogame.ui.screen.play.composable.PlayCard
 import com.example.xogame.ui.screen.play.composable.PlayerLabel
+import com.example.xogame.ui.screen.start_game.navigateToStartGame
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 import com.example.xogame.ui.theme.XONavigationProvider
@@ -35,12 +38,14 @@ fun PlayGameScreen(
     viewModel: PlayGameViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsState().value
-    val navController  = XONavigationProvider.current
+    val navController = XONavigationProvider.current
 
     PlayGameContent(
         state = state,
         onClickSquare = viewModel::onClickSquare,
-        onClickCard = viewModel::disablePosition
+        onClickCard = viewModel::disablePosition,
+        onBackToPlayAgain = { navController.navigateToStartGame(state.firstPlayerName) },
+        onBackToMenu = { navController.navigateToHome() }
     )
 }
 
@@ -48,7 +53,9 @@ fun PlayGameScreen(
 fun PlayGameContent(
     state: PlayUiState,
     onClickSquare: (Int, Int) -> Unit,
-    onClickCard: () -> Unit
+    onClickCard: () -> Unit,
+    onBackToPlayAgain: () -> Unit,
+    onBackToMenu: () -> Unit,
 
 ) {
     XoScaffold {
@@ -59,7 +66,9 @@ fun PlayGameContent(
                 GameResultDialog(
                     showDialog = true,
                     winner = state.winner,
-                    modifier = Modifier.zIndex(2f)
+                    modifier = Modifier.zIndex(2f),
+                    onBackToPlayAgain = onBackToPlayAgain,
+                    onBackToMenu = onBackToMenu
                 )
             }
 

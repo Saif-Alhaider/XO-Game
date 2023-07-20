@@ -34,6 +34,8 @@ fun GameResultDialog(
     modifier: Modifier = Modifier,
     winner: String,
     showDialog: Boolean = false,
+    onBackToPlayAgain: () -> Unit,
+    onBackToMenu: () -> Unit
 ) {
 
     Box(modifier = modifier) {
@@ -66,11 +68,12 @@ fun GameResultDialog(
                         enter = fadeIn(animationSpec = tween(100)),
                         exit = fadeOut(animationSpec = tween(100))
                     ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_star),
-                        contentDescription = stringResource(R.string.player),
-                        modifier = Modifier.width(160.dp)
-                    )}
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_star),
+                            contentDescription = stringResource(R.string.player),
+                            modifier = Modifier.width(160.dp)
+                        )
+                    }
                     Text(
                         text = if (winner != "Draw") "$winner Win" else "DRAW",
                         textAlign = TextAlign.Center,
@@ -82,14 +85,14 @@ fun GameResultDialog(
                     )
                     PrimaryButton(
                         text = stringResource(R.string.play_again),
-                        onClick = {},
+                        onClick = { onBackToPlayAgain() },
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
                             .padding(top = 24.dp)
                     )
                     PrimaryButton(
                         text = stringResource(R.string.main_menu),
-                        onClick = {},
+                        onClick = { onBackToMenu() },
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
                             .padding(top = 12.dp)
@@ -98,10 +101,4 @@ fun GameResultDialog(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun GameResultDialogPreview() {
-    GameResultDialog(winner = "Asia")
 }
