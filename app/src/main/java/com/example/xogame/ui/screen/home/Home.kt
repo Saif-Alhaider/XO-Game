@@ -90,7 +90,8 @@ fun HomeContent(
                     modifier = Modifier.padding(top = 48.dp),
                     onValueChanged = updateUsername,
                     placeHolder = "Enter your name",
-                    value = state.username
+                    value = state.username,
+                    readOnly = false,
                 )
                 //endregion
                 //region start and join game
