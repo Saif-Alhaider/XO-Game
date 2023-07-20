@@ -7,8 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xogame.data.Game
 import com.example.xogame.data.XORepository
-import com.example.xogame.data.util.NotYourTurnException
-import com.example.xogame.data.util.PositionIsNotEmptyException
 import com.example.xogame.data.util.WinnerException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -67,21 +65,16 @@ class PlayGameViewModel @Inject constructor(
                     }
 
                 }
-            } catch (e: PositionIsNotEmptyException) {
-                Log.e("TAG", "PositionIsNotEmptyException: ${e.message}")
-            } catch (e: NotYourTurnException) {
-                Log.e("TAG", "NotYourTurnException: ${e.message}")
-            } catch (e: JoinedTheGameWithException) {
-                _state.update { it.copy(firstPlayerName = e.playerName) }
-                Log.e("TAG", "NotYourTurnException: ${e.message}")
             } catch (e: WinnerException) {
                 when (e.winnerName) {
                     "X" -> {
                         _state.update { it.copy(winner = _state.value.firstPlayerName) }
                     }
+
                     "O" -> {
                         _state.update { it.copy(winner = _state.value.secondPlayerName) }
                     }
+
                     else -> {
                         _state.update { it.copy(winner = "Draw") }
 

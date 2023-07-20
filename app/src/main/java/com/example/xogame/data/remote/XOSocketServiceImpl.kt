@@ -5,9 +5,6 @@ import com.example.xogame.data.Game
 import com.example.xogame.data.GameDto
 import com.example.xogame.data.GameTurn
 import com.example.xogame.data.asGame
-import com.example.xogame.data.util.JoinedTheGameWithException
-import com.example.xogame.data.util.NotYourTurnException
-import com.example.xogame.data.util.PositionIsNotEmptyException
 import com.example.xogame.data.util.WinnerException
 import com.example.xogame.util.ResponseResult
 import com.google.gson.Gson
@@ -99,19 +96,10 @@ class XOSocketServiceImpl @Inject constructor(
                         null
                     }
 
-                    response.contains("Not your turn") -> {
-                        Log.e("gg", "Not your turn: $response")
-                        throw NotYourTurnException(false)
-                    }
-
-                    response.contains("Position is already taken. Try again.") -> {
-                        Log.e("gg", "Position is already taken. Try again.: $response")
-                        throw PositionIsNotEmptyException()
-                    }
-
                     response.contains("win") -> {
                         throw WinnerException(response.substringAfter("#"))
                     }
+
                     response.contains("draw") -> {
                         throw WinnerException("draw")
                     }

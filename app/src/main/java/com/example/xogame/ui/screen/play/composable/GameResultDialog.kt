@@ -32,7 +32,7 @@ import com.example.xogame.ui.theme.XOGameCustomColors
 @Composable
 fun GameResultDialog(
     modifier: Modifier = Modifier,
-    winner: String? = null,
+    winner: String,
     showDialog: Boolean = false,
 ) {
 
@@ -61,13 +61,18 @@ fun GameResultDialog(
                     verticalArrangement = Arrangement.SpaceBetween,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    AnimatedVisibility(
+                        visible = (winner != "Draw"),
+                        enter = fadeIn(animationSpec = tween(100)),
+                        exit = fadeOut(animationSpec = tween(100))
+                    ) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_star),
                         contentDescription = stringResource(R.string.player),
                         modifier = Modifier.width(160.dp)
-                    )
+                    )}
                     Text(
-                        text = if (winner != null) "$winner Win" else "DRAW",
+                        text = if (winner != "Draw") "$winner Win" else "DRAW",
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
