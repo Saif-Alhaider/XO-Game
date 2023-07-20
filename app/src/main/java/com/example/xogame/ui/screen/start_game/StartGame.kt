@@ -34,10 +34,13 @@ import com.example.xogame.ui.composables.XoScaffold
 import com.example.xogame.ui.screen.play.navigateToPlay
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
+import com.example.xogame.ui.theme.XONavigationProvider
 
 @Composable
-fun StartGameScreen(viewModel: StartGameViewModel = hiltViewModel(), navController: NavController) {
+fun StartGameScreen(viewModel: StartGameViewModel = hiltViewModel()) {
     val state = viewModel.state.collectAsState().value
+    val navController  = XONavigationProvider.current
+
     StartGameContent(
         onNavigateBack = {
             navController.popBackStack()
@@ -111,5 +114,5 @@ fun StartGameContent(
 @Preview
 @Composable
 fun StartGamePreview() {
-    XOGameTheme { StartGameScreen(navController = rememberNavController()) }
+    XOGameTheme { StartGameScreen() }
 }

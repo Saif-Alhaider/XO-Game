@@ -16,7 +16,7 @@ fun NavController.navigateToPlay(character: String) {
     }
 }
 
-fun NavGraphBuilder.playRoute(navController: NavController) {
+fun NavGraphBuilder.playRoute() {
     composable(route = "$ROUTE/{${PlayArgs.CHARACTER_ARG}}", arguments = listOf(
         navArgument(PlayArgs.CHARACTER_ARG) { NavType.StringType }
     )) { PlayGameScreen() }

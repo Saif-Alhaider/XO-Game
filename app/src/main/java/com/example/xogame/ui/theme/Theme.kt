@@ -13,10 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
+import androidx.navigation.NavHostController
 
 private val DarkColorScheme = darkColorScheme(
     primary = PrimaryBlue,
@@ -59,6 +58,10 @@ private val DarkCustomColorPlate = CustomColorsPalette(
 @SuppressLint("CompositionLocalNaming")
 val XOGameCustomColors = staticCompositionLocalOf { CustomColorsPalette() }
 
+@SuppressLint("CompositionLocalNaming")
+val XONavigationProvider = staticCompositionLocalOf<NavHostController> {
+    error("No navigation host controller provided.")
+}
 @Composable
 fun XOGameTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
