@@ -1,11 +1,9 @@
 package com.example.xogame.ui.screen.start_game
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xogame.data.XORepository
-import com.example.xogame.data.util.JoinedTheGameWithException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +26,7 @@ class StartGameViewModel @Inject constructor(
     var job: Job? = null
 
     init {
-        _state.update{it.copy(firstPlayerName = xoRepository.getPlayerName() ?: "")}
+        _state.update { it.copy(firstPlayerName = xoRepository.getPlayerName() ?: "") }
         createGameSession()
     }
 
@@ -45,14 +43,10 @@ class StartGameViewModel @Inject constructor(
 
     private suspend fun notifyFriendJoin() {
         job = viewModelScope.launch {
-            try {
-                xoRepository.observeGame(onFriendNotify = {
-                    _state.update { it.copy(isFriendActive = true) }
-                }).collectLatest {}
-            } catch (e: JoinedTheGameWithException) {
-                _state.update { it.copy(player2Name = e.playerName) }
-                Log.d("TAG", "notifyFriendJoin: ${e.message}")
-            }
+            xoRepository.observeGame(onFriendNotify = { name ->
+                _state.update { it.copy(isFriendActive = true) }
+                _state.update { it.copy(player2Name = name) }
+            }).collectLatest {}
         }
     }
 
