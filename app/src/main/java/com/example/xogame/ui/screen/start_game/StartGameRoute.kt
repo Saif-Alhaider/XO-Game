@@ -13,11 +13,11 @@ fun NavController.navigateToStartGame(username: String) {
     navigate("$ROUTE/$username")
 }
 
-fun NavGraphBuilder.startGameRoute(navController: NavController) {
+fun NavGraphBuilder.startGameRoute() {
     composable(route = "$ROUTE/{${StartGameArgs.USERNAME_ARG}}",
         arguments = listOf(
             navArgument(StartGameArgs.USERNAME_ARG) { NavType.StringType }
-        )) { StartGameScreen(navController = navController) }
+        )) { StartGameScreen() }
 }
 
 class StartGameArgs(savedStateHandle: SavedStateHandle) {

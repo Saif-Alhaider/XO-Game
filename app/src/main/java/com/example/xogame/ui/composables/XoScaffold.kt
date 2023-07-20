@@ -47,7 +47,6 @@ fun XoScaffold(
             )
         }
         content(Modifier)
-
     }
 }
 

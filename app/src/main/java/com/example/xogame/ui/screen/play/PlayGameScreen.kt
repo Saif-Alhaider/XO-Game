@@ -28,12 +28,15 @@ import com.example.xogame.ui.screen.play.composable.PlayCard
 import com.example.xogame.ui.screen.play.composable.PlayerLabel
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
+import com.example.xogame.ui.theme.XONavigationProvider
 
 @Composable
 fun PlayGameScreen(
     viewModel: PlayGameViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsState().value
+    val navController  = XONavigationProvider.current
+
     PlayGameContent(
         state = state,
         onClickSquare = viewModel::onClickSquare,

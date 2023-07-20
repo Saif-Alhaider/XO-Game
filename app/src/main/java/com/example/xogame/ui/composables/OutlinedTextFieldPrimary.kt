@@ -21,10 +21,10 @@ fun OutlinedTextFieldPrimary(
     onValueChanged: (String) -> Unit = {},
     placeHolder: String = "",
     trailingIcon: @Composable (() -> Unit)? = null,
-    enabled: Boolean = true
+    readOnly: Boolean = true
 ) {
     OutlinedTextField(
-        enabled = enabled,
+        readOnly = readOnly,
         value = value,
         singleLine = true,
         onValueChange = onValueChanged,
@@ -37,7 +37,8 @@ fun OutlinedTextFieldPrimary(
                 modifier = Modifier.fillMaxWidth()
             )
         },
-        textStyle = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
+
+        textStyle = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center, color = XOGameCustomColors.current.onBackground60),
         shape = RoundedCornerShape(32.dp),
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = XOGameCustomColors.current.primaryPink,

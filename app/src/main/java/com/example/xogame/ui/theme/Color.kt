@@ -8,12 +8,21 @@ val PrimaryBlue = Color(0xFF6A97F2)
 val PrimaryBlue60 = Color(0x996A97F2)
 val PrimaryPink = Color(0xFFF85C9D)
 val PrimaryPink60 = Color(0x99F85C9D)
-val Background = Color(0xFFFFFFFF)
+val BackgroundLight = Color(0xFFFFFFFF)
 val OnBackgroundLight87 = Color(0xDE000000)
 val OnBackgroundLight60 = Color(0x99000000)
 val OnBackgroundLight36 = Color(0x99000000)
+val OnButton = Color(0xDEFFFFFF)
 val CardLight = Color(0x5CFFFFFF)
 val GameCardLight = Color(0xFFFAFAFA)
+
+val GameCardDark = Color(0xFF041014)
+val CardDark = Color(0x5C000000)
+
+val BackgroundDark = Color(0xFF000000)
+val OnBackgroundDark87 = Color(0xDEFFFFFF)
+val OnBackgroundDark60 = Color(0x99FFFFFF)
+val OnBackgroundDark36 = Color(0x99FFFFFF)
 
 @Immutable
 data class CustomColorsPalette(
@@ -24,6 +33,7 @@ data class CustomColorsPalette(
     val onBackground87: Color = Color.Unspecified,
     val onBackground60: Color = Color.Unspecified,
     val onBackground36: Color = Color.Unspecified,
+    val onButton:Color = Color.Unspecified,
     val card: Color = Color.Unspecified,
     val gameCard: Color = Color.Unspecified,
     val background: Color = Color.Unspecified,

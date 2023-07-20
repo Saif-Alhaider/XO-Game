@@ -111,7 +111,7 @@ class PlayGameViewModel @Inject constructor(
         val updatedBoard = state.board.mapIndexed { rowIndex, rowList ->
             rowList.mapIndexed { colIndex, card ->
                 if (rowIndex == row && colIndex == col) {
-                    card.copy(color = if (card.value == "X") Color.Blue else Color.Magenta)
+                    card.copy(color = if (card.value == "X") Color(0xFF6A97F2) else Color(0xFFF85C9D))
                 } else {
                     card
                 }

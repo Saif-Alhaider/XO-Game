@@ -31,12 +31,15 @@ import com.example.xogame.ui.screen.join_game.navigateToJoinGame
 import com.example.xogame.ui.screen.start_game.navigateToStartGame
 import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
+import com.example.xogame.ui.theme.XONavigationProvider
 import kotlinx.coroutines.DelicateCoroutinesApi
 
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navController: NavController) {
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     val state = viewModel.state.collectAsState().value
+    val navController  = XONavigationProvider.current
+
     HomeContent(
         onClickStart = { navController.navigateToStartGame(state.username) },
         updateUsername = viewModel::updateUsername,
@@ -101,7 +104,10 @@ fun HomeContent(
                                 .show()
                         }
                     }
-                    PrimaryButton(text = stringResource(R.string.join_game), modifier = Modifier.padding(top = 12.dp)) {
+                    PrimaryButton(
+                        text = stringResource(R.string.join_game),
+                        modifier = Modifier.padding(top = 12.dp)
+                    ) {
                         if (state.username.isNotBlank()) {
                             savePlayerName(state.username)
                             onClickJoin()
@@ -121,6 +127,6 @@ fun HomeContent(
 @Composable
 fun HomePreview() {
     XOGameTheme {
-        HomeScreen(navController = rememberNavController())
+        HomeScreen()
     }
 }

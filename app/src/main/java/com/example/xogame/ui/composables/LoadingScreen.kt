@@ -17,6 +17,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.xogame.R
+import com.example.xogame.ui.theme.XOGameCustomColors
 import com.example.xogame.ui.theme.XOGameTheme
 
 @Composable
@@ -28,7 +29,7 @@ fun LoadingScreen() {
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            Text(text = "Loading to enter the game", style = MaterialTheme.typography.bodyMedium)
+            Text(text = "Loading to enter the game", style = MaterialTheme.typography.bodyMedium, color = XOGameCustomColors.current.onBackground87)
             LottieAnimation(
                 composition = composition, iterations = LottieConstants.IterateForever,
                 modifier = Modifier.size(300.dp),
