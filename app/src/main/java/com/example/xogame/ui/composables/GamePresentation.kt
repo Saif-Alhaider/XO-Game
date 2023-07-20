@@ -10,13 +10,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,7 +31,7 @@ import com.example.xogame.R
 import com.example.xogame.ui.theme.XOGameCustomColors
 
 @Composable
-fun GamePresentation(firstName : String, secondName : String) {
+fun GamePresentation(firstName: String, secondName: String) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.vs))
     val progress by animateLottieCompositionAsState(composition)
 
@@ -47,14 +50,19 @@ fun GamePresentation(firstName : String, secondName : String) {
             Row(
                 Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
                     .height(400.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = firstName, fontSize = 28.sp, color = Color.White)
                 LottieAnimation(
                     composition = composition,
-                    modifier = Modifier.size(150.dp),
+                    modifier = Modifier
+                        .size(150.dp)
+                        .graphicsLayer {
+                            translationX = 30f
+                        },
                 )
                 Text(text = secondName, fontSize = 28.sp, color = Color.White)
             }
@@ -66,5 +74,5 @@ fun GamePresentation(firstName : String, secondName : String) {
 @Preview(showSystemUi = true)
 @Composable
 fun GamePresentationPreview() {
-    GamePresentation("ali","ahmed")
+    GamePresentation("ali", "ahmed")
 }
