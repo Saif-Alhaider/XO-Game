@@ -14,11 +14,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.xogame.R
 import com.example.xogame.ui.screen.play.PlayUiState
 import com.example.xogame.ui.theme.XOGameCustomColors
+import com.example.xogame.util.createToast
 
 @Composable
 fun PlayCard(
@@ -27,22 +29,27 @@ fun PlayCard(
     onClick: () -> Unit,
     playerTurn: String? = null,
     isActive: Boolean,
-    onClickCard: () -> Unit
+    onClickCard: () -> Unit,
 ) {
+    val context = LocalContext.current
     Box(
         modifier = modifier
             .width(104.dp)
             .height(106.dp)
+            .clickable
+            {
+                if (value.value.isBlank() && isActive) {
+                    onClick()
+                    onClickCard()
+                    Log.e("TAG", "PlayCard: $value")
+                } else {
+                    createToast(context, "Not Your Turn")
+                }
+            }
             .background(
                 shape = RoundedCornerShape(12.dp),
                 color = if (value.color == Color.Transparent) XOGameCustomColors.current.gameCard else value.color
             )
-            .clickable(enabled = value.value.isBlank() && isActive)
-            {
-                onClick()
-                onClickCard()
-                Log.e("TAG", "PlayCard: $value")
-            }
     ) {
         (
                 when (value.value) {
@@ -50,6 +57,7 @@ fun PlayCard(
                     "O" -> painterResource(
                         id = R.drawable.ic_o_player
                     )
+
                     else -> null
                 })?.let {
             Image(

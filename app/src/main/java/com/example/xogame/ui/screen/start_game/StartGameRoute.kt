@@ -6,8 +6,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.xogame.ui.screen.AppDestination
 
-private const val ROUTE = "start game"
+private val ROUTE = AppDestination.StartGame.route
 
 fun NavController.navigateToStartGame(username: String) {
     navigate("$ROUTE/$username")

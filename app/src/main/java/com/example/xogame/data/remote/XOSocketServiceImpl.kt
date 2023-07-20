@@ -5,6 +5,7 @@ import com.example.xogame.data.Game
 import com.example.xogame.data.GameDto
 import com.example.xogame.data.GameTurn
 import com.example.xogame.data.asGame
+import com.example.xogame.data.util.NotYourTurnException
 import com.example.xogame.data.util.WinnerException
 import com.example.xogame.util.ResponseResult
 import com.google.gson.Gson
@@ -58,9 +59,6 @@ class XOSocketServiceImpl @Inject constructor(
 
     override suspend fun joinSession(username: String, roomId: String): ResponseResult<Unit> {
         return try {
-//            if (socket != null) {
-//                socket = null
-//            }
             socket = client.webSocketSession { url("$BASE_URL/$username/$roomId") }
             delay(1000)
             Log.i("gg", "joinSession: ${socket?.isActive}")
@@ -92,7 +90,6 @@ class XOSocketServiceImpl @Inject constructor(
                         val secondPlayerName = response.substringAfter("#")
                         Log.e("gg", "$secondPlayerName")
                         onFriendNotify(secondPlayerName)
-//                        throw JoinedTheGameWithException(secondPlayerName)
                         null
                     }
 
@@ -102,6 +99,10 @@ class XOSocketServiceImpl @Inject constructor(
 
                     response.contains("draw") -> {
                         throw WinnerException("draw")
+                    }
+
+                    response.contains("Not your turn") -> {
+                        throw NotYourTurnException
                     }
 
                     else -> {

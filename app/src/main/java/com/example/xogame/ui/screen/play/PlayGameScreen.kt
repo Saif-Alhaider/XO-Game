@@ -1,5 +1,6 @@
 package com.example.xogame.ui.screen.play
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.xogame.R
 import com.example.xogame.ui.composables.XoScaffold
+import com.example.xogame.ui.screen.AppDestination
 import com.example.xogame.ui.screen.play.composable.GameResultDialog
 import com.example.xogame.ui.screen.play.composable.PlayCard
 import com.example.xogame.ui.screen.play.composable.PlayerLabel
@@ -35,12 +37,14 @@ fun PlayGameScreen(
     viewModel: PlayGameViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsState().value
-    val navController  = XONavigationProvider.current
+    val navController = XONavigationProvider.current
 
     PlayGameContent(
         state = state,
         onClickSquare = viewModel::onClickSquare,
-        onClickCard = viewModel::disablePosition
+        onClickCard = viewModel::disablePosition,
+        onBackToPlayAgain = { navController.navigateUp() },
+        onBackToMenu = { navController.popBackStack(AppDestination.Home.route, false) }
     )
 }
 
@@ -48,20 +52,22 @@ fun PlayGameScreen(
 fun PlayGameContent(
     state: PlayUiState,
     onClickSquare: (Int, Int) -> Unit,
-    onClickCard: () -> Unit
+    onClickCard: () -> Unit,
+    onBackToPlayAgain: () -> Unit,
+    onBackToMenu: () -> Unit,
 
-) {
+    ) {
     XoScaffold {
 
         Box {
 
-            if (state.winner.isNotEmpty()) {
-                GameResultDialog(
-                    showDialog = true,
-                    winner = state.winner,
-                    modifier = Modifier.zIndex(2f)
-                )
-            }
+            GameResultDialog(
+                showDialog = state.winner.isNotEmpty(),
+                winner = state.winner,
+                modifier = Modifier.zIndex(2f),
+                onBackToPlayAgain = onBackToPlayAgain,
+                onBackToMenu = onBackToMenu
+            )
 
             Column(
                 modifier = Modifier.fillMaxHeight(),

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xogame.data.Game
 import com.example.xogame.data.XORepository
+import com.example.xogame.data.util.NotYourTurnException
 import com.example.xogame.data.util.WinnerException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -66,6 +67,7 @@ class PlayGameViewModel @Inject constructor(
 
                 }
             } catch (e: WinnerException) {
+                _state.update { it.copy(isActive = false) }
                 when (e.winnerName) {
                     "X" -> {
                         _state.update { it.copy(winner = _state.value.firstPlayerName) }
@@ -80,6 +82,8 @@ class PlayGameViewModel @Inject constructor(
 
                     }
                 }
+            } catch (e: NotYourTurnException) {
+                _state.update { it.copy(isActive = false) }
             }
         }
     }
